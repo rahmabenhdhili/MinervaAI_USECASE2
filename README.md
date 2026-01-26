@@ -13,6 +13,7 @@ The platform helps users not only find what they want, but also what they can tr
 
 - Semantic supplier and product search using vector similarity
 - Budget-aware recommendations
+- Recommendations system based on previous searches and interaction history
 - Intelligent data pipeline (CSV ingestion → embeddings → vector database)
 - Fast and scalable search with Qdrant
 - Clean and modern frontend interface
@@ -85,5 +86,6 @@ npm start
 - [Islem Labidi](https://github.com/islemlabidi0)  
 
 *Making smart shopping accessible for everyone*
+
 
 
