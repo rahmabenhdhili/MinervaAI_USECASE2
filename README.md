@@ -27,14 +27,24 @@ The platform helps users not only find what they want, but also what they can tr
 - FastAPI
 - Qdrant (Vector Database)
 - FastEmbed (Text embeddings – BGE model)
+- SQLite (Product metadata storage
+- Crawl4ai (Web scraping)
+- Groq (Ultra-fast LLM inference (Llama 3.3 70B))
+- Pytesseract (OCR for text extraction)
+- SigLIP (Visual embeddings (Google's vision-language model))
 
 ### Frontend
-- React
+- React 18 - UI framework
+- Vite - Build tool
+- Axios - HTTP client
+- Tailwind CSS - Styling
+
 
 ### AI & Data
-- Vector embeddings for semantic search
-- Similarity-based retrieval
-- Structured CSV data ingestion
+- SigLIP (google/siglip-base-patch16-224) - 768-dim visual embeddings
+- FastEmbed (BAAI/bge-small-en-v1.5) - 384-dim text embeddings
+- Groq API - LLM inference
+- Pytesseract - OCR engine
 
 ---
 
@@ -75,4 +85,5 @@ npm start
 - [Islem Labidi](https://github.com/islemlabidi0)  
 
 *Making smart shopping accessible for everyone*
+
 
