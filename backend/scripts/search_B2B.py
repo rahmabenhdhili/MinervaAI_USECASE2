@@ -1,31 +1,36 @@
-from fastembed import TextEmbedding
-from qdrant_client import QdrantClient
-import os
-from dotenv import load_dotenv
+from typing import List, Dict
 
-load_dotenv(os.path.join(os.path.dirname(__file__), "../.env"))
+class SemanticSearchAgent:
+    def __init__(self, embedding_agent):
+        self.embedding_agent = embedding_agent
+        self.qdrant_client = embedding_agent.qdrant_client
+        self.collection_name = embedding_agent.collection_name
 
-COLLECTION_NAME = "B2B"
-embedding_model = TextEmbedding(model_name="BAAI/bge-small-en-v1.5")
+    def search(self, query: str, top_k: int = 5) -> List[Dict]:
+        """Semantic search for relevant products"""
+        # Embed the query
+        query_embedding = list(self.embedding_agent.embedding_model.embed([query]))[0]
 
-client = QdrantClient(
-    url=os.getenv("QDRANT_URL"),
-    api_key=os.getenv("QDRANT_API_KEY")
-)
+        response = self.qdrant_client.query_points(
+            collection_name=self.collection_name,
+            query=query_embedding.tolist(),
+            with_payload=True,
+            limit=top_k
+        )
 
-def search_products(query: str, limit: int = 5):
-    query_vector = list(embedding_model.embed([query]))[0]
+        # response is a list of tuples: (score, points_list)
+        results: List[Dict] = []
 
-    # Semantic search
-    result = client.query_points(
-        collection_name=COLLECTION_NAME,
-        query=query_vector.tolist(),
-        with_payload=True,
-        limit=limit
-    )
+        for hit in response.points:
+            payload = hit.payload or {}
+            results.append({
+                "product_name": payload.get("product_name"),
+                "category": payload.get("category"),
+                "brand": payload.get("brand"),
+                "supplier_name": payload.get("supplier_name"),
+                "city": payload.get("city"),
+                "unit_price": float(payload.get("unit_price")),
+                "similarity_score": float(hit.score),
+            })
 
-    print(f"\n🔍 Results for: '{query}'\n")
-    print("RAW RESULT:", result)
-
-if __name__ == "__main__":
-    search_products("ordinateur")
+        return results
