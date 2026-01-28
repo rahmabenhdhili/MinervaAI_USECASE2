@@ -1,38 +1,243 @@
-.App {
-  text-align: center;
+/* ===== Formulaire ===== */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.form-group {
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #2e7d32; /* vert foncé */
+  font-size: 15px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+input {
+  width: 95%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #c8e6c9; /* vert très clair */
+  font-size: 15px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #43a047; /* vert principal */
+  box-shadow: 0 0 8px rgba(67,160,71,0.25);
+}
+
+input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #43a047, #81c784);
+  border: none;
+  border-radius: 8px;
   color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  background: linear-gradient(135deg, #388e3c, #aed581);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
   }
 }
+
+/* ===== Mini-cards Best Product ===== */
+.best-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.best-mini-card {
+  flex: 1 1 150px;
+  background: #e8f5e9; /* vert doux */
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: transform 0.25s, background 0.25s;
+}
+
+.best-mini-card:hover {
+  transform: translateY(-3px);
+  background: #c5e1a5;
+}
+
+.best-mini-card strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #2e7d32;
+  font-size: 14px;
+}
+
+.best-mini-card .icon {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+/* ===== Carte Explication ===== */
+.explanation-card {
+  background: #ffffff;
+  border-left: 6px solid #ffb74d; /* accent jaune doux */
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin-top: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  transition: all 0.25s;
+}
+
+.explanation-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.explanation-card h4 {
+  margin-bottom: 12px;
+  color: #ffb74d;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.explanation-card h4::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: #ffb74d; /* accent orange doux */
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+/* ===== Carte Meilleur choix ===== */
+.card-best {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px 20px;
+  margin-top: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  position: relative;
+  transition: all 0.25s;
+}
+
+.card-best h2 {
+  color: #2e7d32;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 3px solid #81c784;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.best-total-price {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #0288d1; /* bleu doux */
+}
+
+/* ===== Carte Alternatives ===== */
+.card-alt {
+  background-color: #f1f8e9; /* vert très doux */
+  border-left: 5px solid #43a047; /* vert principal */
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  position: relative;
+  transition: all 0.2s;
+}
+
+.card-alt:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+.card-alt h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #2e7d32;
+}
+
+.alt-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #37474f;
+}
+
+.alt-total-price {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2e7d32;/* accent orange doux pour prix alternatif */
+}
+
+@media (max-width: 600px) {
+  .alt-total-price {
+    position: static;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 24px;
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+button:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+  transform: none;
+}
+.form-error {
+  background: #fdecea;
+  color: #c0392b;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  border: 1px solid #f5c6cb;
+}
+

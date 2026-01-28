@@ -29,6 +29,8 @@ class SemanticSearchAgent:
                 "brand": payload.get("brand"),
                 "supplier_name": payload.get("supplier_name"),
                 "city": payload.get("city"),
+                "phone": payload.get("phone"),
+                "email": payload.get("email"),
                 "unit_price": float(payload.get("unit_price")),
                 "similarity_score": float(hit.score),
             })
