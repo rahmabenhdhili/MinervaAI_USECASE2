@@ -1,0 +1,374 @@
+[
+  {
+    "id": "1eba7528-d298-46d3-96ac-89789959b527",
+    "order_number": "ORD-00001",
+    "customer": {
+      "name": "wassim",
+      "email": "gue@gmailcom",
+      "phone": "+33659845223"
+    },
+    "shipping_address": {
+      "street": "25 rue forst",
+      "city": "paris",
+      "state": "tn",
+      "zip_code": "2568",
+      "country": "France"
+    },
+    "items": [
+      {
+        "product_id": "a271bf78-c13c-4452-80b6-179448dba16f",
+        "product_name": "Easy Peasy Lemon Squeaky Game - Ideal Family Board Game for Kids and Adults, Unique Mix of Trivia, Mental and Physical Challenges| Suitable for Ages 12+ | 4+ Players",
+        "product_image": "https://m.media-amazon.com/images/I/71BT1btMurL._AC_UL320_.jpg",
+        "price": 30.400000000000002,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "subtotal": 30.4,
+      "shipping": 10.0,
+      "tax": 3.04,
+      "total": 43.44
+    },
+    "payment_method": "card",
+    "status": "pending",
+    "tracking_number": null,
+    "created_at": "2026-01-29T16:40:39.336839",
+    "updated_at": "2026-01-29T16:40:39.336847",
+    "status_history": [
+      {
+        "status": "pending",
+        "timestamp": "2026-01-29T16:40:39.336848",
+        "note": "Commande créée"
+      }
+    ]
+  },
+  {
+    "id": "078df6e7-9840-4723-8fc3-1bc798ad6094",
+    "order_number": "ORD-00002",
+    "customer": {
+      "name": "jawed mheni",
+      "email": "jawed@gmail.com",
+      "phone": "+33659845223"
+    },
+    "shipping_address": {
+      "street": "25 rue forst",
+      "city": "paris",
+      "state": "fr",
+      "zip_code": "2568",
+      "country": "France"
+    },
+    "items": [
+      {
+        "product_id": "926d51f9-5e7d-4de3-9003-94567cd89a7e",
+        "product_name": "HP Chromebook 14 Laptop, Intel Celeron N4000 Processor, 4 GB RAM, 32 GB eMMC, 14” HD Display, Chrome, Lightweight Computer with Webcam and Dual Mics, Home, School, Music, Movies (14a-na0021nr, 2021)",
+        "product_image": "https://m.media-amazon.com/images/I/71TnJjfciVL._AC_SX466_.jpg",
+        "price": 300,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "subtotal": 300,
+      "shipping": 0.0,
+      "tax": 30.0,
+      "total": 330.0
+    },
+    "payment_method": "card",
+    "status": "pending",
+    "tracking_number": null,
+    "created_at": "2026-01-29T17:28:29.870015",
+    "updated_at": "2026-01-29T17:28:29.870025",
+    "status_history": [
+      {
+        "status": "pending",
+        "timestamp": "2026-01-29T17:28:29.870027",
+        "note": "Commande créée"
+      }
+    ]
+  },
+  {
+    "id": "e84936a6-2720-442e-9854-0cee9bf1414b",
+    "order_number": "ORD-00003",
+    "customer": {
+      "name": "jawed mheni",
+      "email": "jawed@gmail.com",
+      "phone": "+33659845223"
+    },
+    "shipping_address": {
+      "street": "25 rue forst",
+      "city": "paris",
+      "state": "fr",
+      "zip_code": "2568",
+      "country": "France"
+    },
+    "items": [
+      {
+        "product_id": "44851589-fa0d-4672-a2bd-501dcd6d30a9",
+        "product_name": "Lenovo 2026 New V15 Laptop for Student & Business with Microsoft Office on the Web, AMD Ryzen 3 7320U (Beat i7-1065G7), 15.6'' FHD, 16GB RAM, 512GB SSD, Ethernet Port RJ-45, Windows 11 Pro, No Mouse",
+        "product_image": "https://m.media-amazon.com/images/I/71iNM8bH9OL._AC_UY218_.jpg",
+        "price": 450,
+        "quantity": 2
+      },
+      {
+        "product_id": "926d51f9-5e7d-4de3-9003-94567cd89a7e",
+        "product_name": "HP Chromebook 14 Laptop, Intel Celeron N4000 Processor, 4 GB RAM, 32 GB eMMC, 14” HD Display, Chrome, Lightweight Computer with Webcam and Dual Mics, Home, School, Music, Movies (14a-na0021nr, 2021)",
+        "product_image": "https://m.media-amazon.com/images/I/71TnJjfciVL._AC_SX466_.jpg",
+        "price": 300,
+        "quantity": 1
+      },
+      {
+        "product_id": "54d70812-09e8-4d8a-b974-e8d5d2b6c901",
+        "product_name": "DREAM PAIRS",
+        "product_image": "https://m.media-amazon.com/images/I/61d09qYzVSL._AC_UL320_.jpg",
+        "price": 41,
+        "quantity": 1
+      },
+      {
+        "product_id": "b62b5e8f-a000-4079-b781-2038b9427182",
+        "product_name": "Pet Odor Exterminator Specialty Pet Products Clothesline Fresh 13 Oz Candle, 2-Pack",
+        "product_image": "https://m.media-amazon.com/images/I/81SdGNh6IxL._AC_UL320_.jpg",
+        "price": 23.1,
+        "quantity": 1
+      },
+      {
+        "product_id": "4e4e0a23-20b9-4c47-9996-63214b7d4bf5",
+        "product_name": "3/6/12/24/50 Pack 23.6 Inch Small White Paper Umbrellas Chinese Japanese Parasol Oiled Paper Decorative Umbrellas DIY Painting Parasol for Weddings Bridal Showers Crafts Photography Party Decor",
+        "product_image": "https://m.media-amazon.com/images/I/71mA0hi03OL._AC_UL320_.jpg",
+        "price": 70,
+        "quantity": 1
+      },
+      {
+        "product_id": "a271bf78-c13c-4452-80b6-179448dba16f",
+        "product_name": "Easy Peasy Lemon Squeaky Game - Ideal Family Board Game for Kids and Adults, Unique Mix of Trivia, Mental and Physical Challenges| Suitable for Ages 12+ | 4+ Players",
+        "product_image": "https://m.media-amazon.com/images/I/71BT1btMurL._AC_UL320_.jpg",
+        "price": 30.400000000000002,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "subtotal": 1364.5,
+      "shipping": 0.0,
+      "tax": 136.45,
+      "total": 1500.95
+    },
+    "payment_method": "card",
+    "status": "pending",
+    "tracking_number": null,
+    "created_at": "2026-01-29T18:09:06.949676",
+    "updated_at": "2026-01-29T18:09:06.949683",
+    "status_history": [
+      {
+        "status": "pending",
+        "timestamp": "2026-01-29T18:09:06.949685",
+        "note": "Commande créée"
+      }
+    ]
+  },
+  {
+    "id": "d5fc48c7-d2ce-4192-84e4-65b4a0d57699",
+    "order_number": "ORD-00004",
+    "customer": {
+      "name": "jawed mheni",
+      "email": "jawed@gmail.com",
+      "phone": "+33659845223"
+    },
+    "shipping_address": {
+      "street": "25 rue forst",
+      "city": "paris",
+      "state": "fr",
+      "zip_code": "2568",
+      "country": "France"
+    },
+    "items": [
+      {
+        "product_id": "b62b5e8f-a000-4079-b781-2038b9427182",
+        "product_name": "Pet Odor Exterminator Specialty Pet Products Clothesline Fresh 13 Oz Candle, 2-Pack",
+        "product_image": "https://m.media-amazon.com/images/I/81SdGNh6IxL._AC_UL320_.jpg",
+        "price": 23.1,
+        "quantity": 1
+      },
+      {
+        "product_id": "4e4e0a23-20b9-4c47-9996-63214b7d4bf5",
+        "product_name": "3/6/12/24/50 Pack 23.6 Inch Small White Paper Umbrellas Chinese Japanese Parasol Oiled Paper Decorative Umbrellas DIY Painting Parasol for Weddings Bridal Showers Crafts Photography Party Decor",
+        "product_image": "https://m.media-amazon.com/images/I/71mA0hi03OL._AC_UL320_.jpg",
+        "price": 70,
+        "quantity": 1
+      },
+      {
+        "product_id": "a271bf78-c13c-4452-80b6-179448dba16f",
+        "product_name": "Easy Peasy Lemon Squeaky Game - Ideal Family Board Game for Kids and Adults, Unique Mix of Trivia, Mental and Physical Challenges| Suitable for Ages 12+ | 4+ Players",
+        "product_image": "https://m.media-amazon.com/images/I/71BT1btMurL._AC_UL320_.jpg",
+        "price": 30.400000000000002,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "subtotal": 123.5,
+      "shipping": 0.0,
+      "tax": 12.35,
+      "total": 135.85
+    },
+    "payment_method": "card",
+    "status": "pending",
+    "tracking_number": null,
+    "created_at": "2026-01-29T18:17:19.446135",
+    "updated_at": "2026-01-29T18:17:19.446145",
+    "status_history": [
+      {
+        "status": "pending",
+        "timestamp": "2026-01-29T18:17:19.446147",
+        "note": "Commande créée"
+      }
+    ]
+  },
+  {
+    "id": "94e74bcf-8b28-44d2-adbe-be8111343979",
+    "order_number": "ORD-00005",
+    "customer": {
+      "name": "jawed mheni",
+      "phone": "+33659845223"
+    },
+    "shipping_address": {
+      "street": "25 rue forst",
+      "city": "paris",
+      "zip_code": "2568",
+      "country": "France"
+    },
+    "items": [
+      {
+        "product_id": "4e4e0a23-20b9-4c47-9996-63214b7d4bf5",
+        "product_name": "3/6/12/24/50 Pack 23.6 Inch Small White Paper Umbrellas Chinese Japanese Parasol Oiled Paper Decorative Umbrellas DIY Painting Parasol for Weddings Bridal Showers Crafts Photography Party Decor",
+        "product_image": "https://m.media-amazon.com/images/I/71mA0hi03OL._AC_UL320_.jpg",
+        "price": 70,
+        "cost": 70,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "subtotal": 70,
+      "shipping": 0,
+      "tax": 0,
+      "total": 70,
+      "cost": 70,
+      "profit": 0
+    },
+    "payment_method": "card",
+    "status": "delivered",
+    "tracking_number": "TRK-00000005",
+    "created_at": "2026-01-29T19:29:49.934942",
+    "updated_at": "2026-01-29T19:29:49.934953",
+    "delivered_at": "2026-01-29T19:29:49.934955",
+    "status_history": [
+      {
+        "status": "delivered",
+        "timestamp": "2026-01-29T19:29:49.934956",
+        "note": "Commande créée et livrée"
+      }
+    ]
+  },
+  {
+    "id": "5e43d9a1-fc36-4149-b078-092f0a4679ed",
+    "order_number": "ORD-00006",
+    "customer": {
+      "name": "jawed mheni",
+      "phone": "+33659845223"
+    },
+    "shipping_address": {
+      "street": "25 rue forst",
+      "city": "paris",
+      "zip_code": "2568",
+      "country": "France"
+    },
+    "items": [
+      {
+        "product_id": "b62b5e8f-a000-4079-b781-2038b9427182",
+        "product_name": "Pet Odor Exterminator Specialty Pet Products Clothesline Fresh 13 Oz Candle, 2-Pack",
+        "product_image": "https://m.media-amazon.com/images/I/81SdGNh6IxL._AC_UL320_.jpg",
+        "price": 23.1,
+        "cost": 23.1,
+        "quantity": 1
+      },
+      {
+        "product_id": "a271bf78-c13c-4452-80b6-179448dba16f",
+        "product_name": "Easy Peasy Lemon Squeaky Game - Ideal Family Board Game for Kids and Adults, Unique Mix of Trivia, Mental and Physical Challenges| Suitable for Ages 12+ | 4+ Players",
+        "product_image": "https://m.media-amazon.com/images/I/71BT1btMurL._AC_UL320_.jpg",
+        "price": 30.400000000000002,
+        "cost": 30.400000000000002,
+        "quantity": 1
+      },
+      {
+        "product_id": "4e4e0a23-20b9-4c47-9996-63214b7d4bf5",
+        "product_name": "3/6/12/24/50 Pack 23.6 Inch Small White Paper Umbrellas Chinese Japanese Parasol Oiled Paper Decorative Umbrellas DIY Painting Parasol for Weddings Bridal Showers Crafts Photography Party Decor",
+        "product_image": "https://m.media-amazon.com/images/I/71mA0hi03OL._AC_UL320_.jpg",
+        "price": 70,
+        "cost": 70,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "subtotal": 123.5,
+      "shipping": 0,
+      "tax": 0,
+      "total": 123.5,
+      "cost": 123.5,
+      "profit": 0.0
+    },
+    "payment_method": "card",
+    "status": "delivered",
+    "tracking_number": "TRK-00000006",
+    "created_at": "2026-01-29T19:30:45.166905",
+    "updated_at": "2026-01-29T19:30:45.166912",
+    "delivered_at": "2026-01-29T19:30:45.166915",
+    "status_history": [
+      {
+        "status": "delivered",
+        "timestamp": "2026-01-29T19:30:45.166916",
+        "note": "Commande créée et livrée"
+      }
+    ]
+  },
+  {
+    "id": "d89ff0e7-6548-47a9-8f15-39ef0362f6d4",
+    "order_number": "ORD-00007",
+    "customer": {
+      "name": "wided rahmouni",
+      "phone": "484551"
+    },
+    "shipping_address": {
+      "street": "21 mer d'omen",
+      "city": "ariana",
+      "zip_code": "2083",
+      "country": "France"
+    },
+    "items": [
+      {
+        "product_id": "5a760964-54f1-4c87-a2b8-129b2c72fbe4",
+        "product_name": "Smartphone Video Rig with Light, Handheld Ring Selfie Light Kit, LED Mobile Video Stabilizer with Built-in 8000mAh Battery for Camera, Smartphone, YouTube, TikTok Video Recording, Makeup",
+        "product_image": "https://m.media-amazon.com/images/I/516+P7IDIxL._AC_UL320_.jpg",
+        "price": 59.99,
+        "cost": 38,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "subtotal": 59.99,
+      "shipping": 0,
+      "tax": 0,
+      "total": 59.99,
+      "cost": 38,
+      "profit": 21.99
+    },
+    "payment_method": "card",
+    "status": "delivered",
+    "tracking_number": "TRK-00000007",
+    "created_at": "2026-01-29T20:18:17.744515",
+    "updated_at": "2026-01-29T20:18:17.744523",
+    "delivered_at": "2026-01-29T20:18:17.744524",
+    "status_history": [
+      {
+        "status": "delivered",
+        "timestamp": "2026-01-29T20:18:17.744526",
+        "note": "Commande créée et livrée"
+      }
+    ]
+  }
+]
