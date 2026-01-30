@@ -1,3 +1,4 @@
+# Core Configuration
 from app.database import get_events_collection
 
 async def get_user_preference_text(user_id: str, limit: int = 20) -> str:
