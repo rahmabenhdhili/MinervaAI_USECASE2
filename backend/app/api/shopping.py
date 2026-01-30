@@ -29,6 +29,20 @@ router = APIRouter(prefix="/api/shopping", tags=["shopping"])
 # Session storage (use Redis in production)
 sessions = {}
 
+# Market name mapping: frontend ID -> database name
+MARKET_MAPPING = {
+    "el_mazraa": "Mazraa Market",
+    "aziza": "aziza",  # Match database exactly (lowercase)
+    "carrefour": "Carrefour",
+    "mg": "MG",
+    "geant": "Géant",
+    "monoprix": "Monoprix"
+}
+
+def get_db_market_name(frontend_market: str) -> str:
+    """Convert frontend market ID to database market name"""
+    return MARKET_MAPPING.get(frontend_market, frontend_market)
+
 @router.post("/search-by-image")
 async def search_by_image(
     image: UploadFile = File(...),
@@ -46,6 +60,17 @@ async def search_by_image(
     Optional text_hint improves accuracy (e.g., "yaourt", "lait", brand name)
     """
     try:
+        # Read image first
+        image_bytes = await image.read()
+        
+        # Map frontend market ID to database market name
+        db_market = get_db_market_name(market)
+        print(f"\n🔍 Shopping Mode Search")
+        print(f"  Frontend Market: {market}")
+        print(f"  Database Market: {db_market}")
+        print(f"  Budget: {budget} TND")
+        print(f"  Image size: {len(image_bytes)} bytes")
+        
         # Generate session ID if not provided
         if not session_id:
             session_id = str(uuid.uuid4())
@@ -53,23 +78,15 @@ async def search_by_image(
         # Create cart if doesn't exist
         if session_id not in sessions:
             cart = cart_service.create_cart(session_id, budget)
-            sessions[session_id] = {"cart": cart, "market": market}
-        
-        # Read image
-        image_bytes = await image.read()
-        
-        print(f"\n🔍 Shopping Mode Search")
-        print(f"  Market: {market}")
-        print(f"  Budget: {budget} TND")
-        print(f"  Image size: {len(image_bytes)} bytes")
+            sessions[session_id] = {"cart": cart, "market": db_market}
         
         # Check cache for search results first
         cached_results = cache_service.get_search_results(
-            image_bytes, market, budget, limit
+            image_bytes, db_market, budget, limit
         )
         
         if cached_results:
-            print("  ✓ Using cached search results")
+            print("  [CACHE] Using cached search results")
             
             # Get the best match - handle both old and new cache formats
             if cached_results:
@@ -131,88 +148,82 @@ async def search_by_image(
             image_embedding = cached_result
             text_hint = None
         
-        # 🤖 AGENTIC RAG: Use agent orchestrator for multi-step reasoning
-        print("  🤖 Activating Agentic RAG workflow...")
+        # AGENTIC RAG: Use agent orchestrator for multi-step reasoning
+        print("  [AGENT] Activating Agentic RAG workflow...")
         
         agent_result = agent_orchestrator.execute_workflow(
             query_vector=image_embedding,
             query_text=text_hint,
-            market=market,
+            market=db_market,
             budget=budget,
             limit=10
         )
         
         if not agent_result["success"]:
-            print(f"  ⚠️ Agent workflow failed: {agent_result.get('message')}")
-            print(f"  ℹ️ Falling back to SQLite database...")
-            market_results = []
-            all_markets_results = []
-        else:
-            # Extract results from agent workflow
-            market_results = [agent_result["best_match"]]
-            all_markets_results = []  # Agent already found alternatives
+            print(f"  [WARNING] Agent workflow failed: {agent_result.get('message')}")
             
-            # Get alternatives from agent
-            agent_alternatives = agent_result.get("alternatives", [])
+            # Map database market name to display name
+            market_display_name = {
+                "Carrefour": "Carrefour",
+                "Mazraa Market": "Mazraa Market", 
+                "aziza": "Aziza"
+            }.get(db_market, db_market)
             
-            print(f"  ✓ Agent completed workflow with {len(agent_result.get('reasoning_chain', []))} steps")
-            print(f"  📊 Agent reasoning: {' → '.join(agent_result.get('reasoning_chain', []))}")
+            return {
+                "session_id": session_id,
+                "market": market,
+                "budget": budget,
+                "product_not_found": True,
+                "status": "no_products_in_market",
+                "message": f"No products found in {market_display_name}",
+                "suggestion": f"Try searching in a different market or check if this product is available.",
+                "cart": cart_service.get_cart(session_id),
+                "cached": False
+            }
+        
+        # Extract results from agent workflow
+        market_results = [agent_result["best_match"]]
+        all_markets_results = []  # Agent already found alternatives
+        
+        # Get alternatives from agent
+        agent_alternatives = agent_result.get("alternatives", [])
+        
+        print(f"  [OK] Agent completed workflow with {len(agent_result.get('reasoning_chain', []))} steps")
+        print(f"  [INFO] Agent reasoning: {' -> '.join(agent_result.get('reasoning_chain', []))}")
         
         if not market_results:
-            # Try loading from SQLite database as fallback
-            print(f"  ℹ️ No results in Qdrant, checking SQLite database...")
-            db_products = product_db.get_products_by_market(market, limit=10)
+            # No results found in Qdrant (fallback case)
+            market_display_name = {
+                "Carrefour": "Carrefour",
+                "Mazraa Market": "Mazraa Market",
+                "aziza": "Aziza"
+            }.get(db_market, db_market)
             
-            if db_products:
-                print(f"  ✓ Found {len(db_products)} products in database")
-                # Use first product as best guess
-                best_product = db_products[0]
-                
-                within_budget = best_product['price'] <= budget
-                budget_status = "Within budget" if within_budget else f"Over budget by {best_product['price'] - budget:.2f} TND"
-                
-                return {
-                    "session_id": session_id,
-                    "market": market,
-                    "budget": budget,
-                    "product": {
-                        "id": best_product['product_id'],
-                        "name": best_product['name'],
-                        "description": best_product['description'],
-                        "price": best_product['price'],
-                        "market": best_product['market'],
-                        "brand": best_product.get('brand'),
-                        "image_url": best_product.get('image_url')
-                    },
-                    "match_confidence": 0.5,
-                    "within_budget": within_budget,
-                    "budget_status": budget_status,
-                    "cart": cart_service.get_cart(session_id),
-                    "message": "No exact match found. Showing similar product.",
-                    "cached": False
-                }
-            else:
-                return {
-                    "session_id": session_id,
-                    "market": market,
-                    "budget": budget,
-                    "error": f"No products found in {market}. Try another market or run the weekly scraper.",
-                    "cart": cart_service.get_cart(session_id)
-                }
+            return {
+                "session_id": session_id,
+                "market": market,
+                "budget": budget,
+                "product_not_found": True,
+                "status": "no_products_in_market",
+                "message": f"No products found in {market_display_name}",
+                "suggestion": f"Try searching in a different market or check if this product is available.",
+                "cart": cart_service.get_cart(session_id),
+                "cached": False
+            }
         
-        print(f"  ✓ Found {len(market_results)} products in {market}")
+        print(f"  [OK] Found {len(market_results)} products in {market}")
         
-        # 🎯 RE-RANK results using multiple signals for better accuracy
-        print("  🔄 Re-ranking results with multiple signals...")
+        # RE-RANK results using multiple signals for better accuracy
+        print("  [RERANK] Re-ranking results with multiple signals...")
         market_results = reranking_service.rerank(
             results=market_results,
             ocr_text=text_hint
         )
         
-        # 🎯 PROTOTYPE-BASED BOOSTING (Few-Shot Learning)
+        # PROTOTYPE-BASED BOOSTING (Few-Shot Learning)
         # Boost scores based on prototype similarity
         if prototype_service.prototypes:
-            print("  🎯 Applying prototype-based boosting...")
+            print("  [PROTOTYPE] Applying prototype-based boosting...")
             for result in market_results:
                 payload = result["payload"]
                 base_score = result.get("final_score", result.get("score", 0))
@@ -245,10 +256,17 @@ async def search_by_image(
         SIMILAR_MATCH_THRESHOLD = 0.65  # 65% for similar product (lowered for small dataset)
         
         if similarity_score < SIMILAR_MATCH_THRESHOLD:
-            # Below 70% - definitely not found
-            print(f"  ⚠️ Very low confidence: {similarity_score*100:.0f}% < {SIMILAR_MATCH_THRESHOLD*100:.0f}%")
-            print(f"  ❌ Product not found in {market}")
-            print(f"  🔍 Closest match was: {payload['name']} ({similarity_score*100:.0f}%)")  # Debug info
+            # Below 65% - definitely not found
+            print(f"  [WARNING] Very low confidence: {similarity_score*100:.0f}% < {SIMILAR_MATCH_THRESHOLD*100:.0f}%")
+            print(f"  [ERROR] Product not found in {market}")
+            print(f"  [INFO] Closest match was: {payload['name']} ({similarity_score*100:.0f}%)")  # Debug info
+            
+            # Map database market name to display name
+            market_display_name = {
+                "Carrefour": "Carrefour",
+                "Mazraa Market": "Mazraa Market",
+                "aziza": "Aziza"
+            }.get(db_market, db_market)
             
             # Detect category and brand from OCR text
             detected_category = "product"
@@ -289,22 +307,22 @@ async def search_by_image(
                 "status": "unknown_product",
                 "detected_category": detected_category,
                 "detected_brand": detected_brand,
-                "message": f"❌ This product is not available in {market}.",
-                "suggestion": f"We detected a {detected_category}" + (f" from {detected_brand}" if detected_brand != "unknown" else "") + ", but it's not in our database. Try a different market or add more products.",
+                "message": f"Product not found in {market_display_name}",
+                "suggestion": f"We detected a {detected_category}" + (f" from {detected_brand}" if detected_brand != "unknown" else "") + ", but it's not in our database. Try searching in a different market.",
                 "cart": cart_service.get_cart(session_id),
                 "cached": False
             }
         
         elif similarity_score < EXACT_MATCH_THRESHOLD:
             # 70-82% - Similar product (different brand or variant)
-            print(f"  ⚠️ Similar match: {similarity_score*100:.0f}% (not exact)")
-            print(f"  ℹ️ Showing similar product as suggestion")
+            print(f"  [WARNING] Similar match: {similarity_score*100:.0f}% (not exact)")
+            print(f"  [INFO] Showing similar product as suggestion")
             
             # Mark as similar, not exact
             is_similar = True
         else:
             # 82%+ - Exact match
-            print(f"  ✅ Exact match: {similarity_score*100:.0f}% ≥ {EXACT_MATCH_THRESHOLD*100:.0f}%")
+            print(f"  [OK] Exact match: {similarity_score*100:.0f}% >= {EXACT_MATCH_THRESHOLD*100:.0f}%")
             is_similar = False
         
         # Check budget status
@@ -316,10 +334,10 @@ async def search_by_image(
             image_bytes, market, budget, limit, [best_match]
         )
         
-        print(f"  ✓ Best match: {payload['name']} ({similarity_score*100:.0f}% match)")
-        print(f"  💰 Price: {product_price} TND - {budget_status}")
+        print(f"  [MATCH] Best match: {payload['name']} ({similarity_score*100:.0f}% match)")
+        print(f"  [PRICE] Price: {product_price} TND - {budget_status}")
         
-        # 🤖 Use agent's analysis and recommendations
+        # Use agent's analysis and recommendations
         recommendation = None
         alternatives = []
         suggested_quantity = 1
@@ -335,7 +353,7 @@ async def search_by_image(
                 quantity_reasoning = qty_data["reasoning"]
                 total_price = qty_data["total_price"]
                 total_within_budget = qty_data["within_budget"]
-                print(f"  📦 Agent suggested: {suggested_quantity}x ({quantity_reasoning})")
+                print(f"  [QUANTITY] Agent suggested: {suggested_quantity}x ({quantity_reasoning})")
             
             # Get alternatives from agent
             if agent_result.get("alternatives"):
@@ -354,15 +372,15 @@ async def search_by_image(
                         "percentage_cheaper": round(alt["percentage"], 1),
                         "similarity_score": alt.get("similarity", 0)
                     })
-                print(f"  ✓ Agent found {len(alternatives)} cheaper alternative(s)")
+                print(f"  [ALTERNATIVES] Agent found {len(alternatives)} cheaper alternative(s)")
             
             # Use agent's recommendation or generate with Groq
             if agent_result.get("recommendation"):
                 recommendation = agent_result["recommendation"]
-                print(f"  🤖 Agent recommendation: {recommendation}")
+                print(f"  [RECOMMENDATION] Agent recommendation: {recommendation}")
             else:
                 # Fallback to Groq for natural language recommendation
-                print("  🤖 Generating Groq recommendation...")
+                print("  [GROQ] Generating Groq recommendation...")
                 
                 budget_status_text = "Within budget" if within_budget else f"Over budget by {product_price - budget:.2f} TND"
                 
@@ -414,7 +432,7 @@ Be friendly and helpful. Keep it short."""
                 recommendation = response.choices[0].message.content.strip()
         
         except Exception as e:
-            print(f"  ⚠️ Could not generate recommendation: {e}")
+            print(f"  [WARNING] Could not generate recommendation: {e}")
             # Fallback recommendation
             if within_budget:
                 recommendation = f"This product is within your budget. You can add it to your cart!"
@@ -484,17 +502,18 @@ async def add_to_cart(
         )
         
         # Add to cart with market for tax calculation
-        updated_cart = cart_service.add_item(session_id, product, quantity, product_market)
+        result = cart_service.add_item(session_id, product, quantity, product_market)
+        updated_cart = result["cart"]
         
         # Calculate tax info
         tax_info = ""
         if product_market.lower() == 'aziza' and len(updated_cart.items) > 0:
             tax_info = f" (includes 0.10 TND shopping fee)"
         
-        message = f"✅ Added {quantity}x {product_name} to cart{tax_info}"
+        message = f"[OK] Added {quantity}x {product_name} to cart{tax_info}"
         
         if updated_cart.is_over_budget:
-            message = f"⚠️ Cart is over budget by {updated_cart.overspend_amount:.2f} TND"
+            message = f"[WARNING] Cart is over budget by {updated_cart.overspend_amount:.2f} TND"
         
         return {
             "cart": updated_cart,
@@ -516,7 +535,7 @@ async def get_cart(session_id: str):
     
     message = "Cart retrieved successfully"
     if cart.is_over_budget:
-        message = f"⚠️ Cart is over budget by {cart.overspend_amount:.2f} TND"
+        message = f"[WARNING] Cart is over budget by {cart.overspend_amount:.2f} TND"
     
     return CartResponse(
         cart=cart,
@@ -556,7 +575,7 @@ async def update_item_quantity(
             message = "Item removed from cart"
         
         if updated_cart.is_over_budget:
-            message = f"⚠️ Cart is over budget by {updated_cart.overspend_amount:.2f} TND"
+            message = f"[WARNING] Cart is over budget by {updated_cart.overspend_amount:.2f} TND"
         
         return CartResponse(
             cart=updated_cart,
@@ -588,9 +607,9 @@ async def increase_item_quantity(
         new_quantity = item.quantity + amount
         updated_cart = cart_service.set_item_quantity(session_id, product_id, new_quantity, market)
         
-        message = f"✅ Increased to {new_quantity}x"
+        message = f"[OK] Increased to {new_quantity}x"
         if updated_cart.is_over_budget:
-            message = f"⚠️ Cart is over budget by {updated_cart.overspend_amount:.2f} TND"
+            message = f"[WARNING] Cart is over budget by {updated_cart.overspend_amount:.2f} TND"
         
         return CartResponse(
             cart=updated_cart,
@@ -617,7 +636,7 @@ async def decrease_item_quantity(
         item = next((item for item in updated_cart.items if item.product.id == product_id), None)
         
         if item:
-            message = f"✅ Decreased to {item.quantity}x"
+            message = f"[OK] Decreased to {item.quantity}x"
         else:
             message = "Item removed from cart (quantity reached 0)"
         
@@ -746,3 +765,146 @@ async def find_best_deal(
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Best deal search failed: {str(e)}")
+
+
+@router.get("/cart/analysis/{session_id}")
+async def get_cart_analysis(session_id: str):
+    """
+    Get comprehensive cart analysis with explainable AI insights
+    
+    Returns:
+        - Budget status with clear explanations
+        - Shopping summary with insights
+        - Recommendations based on spending
+    """
+    try:
+        analysis = cart_service.get_cart_analysis(session_id)
+        return analysis
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+
+
+@router.post("/cart/check-item-impact")
+async def check_item_impact(
+    session_id: str = Form(...),
+    product_id: str = Form(...),
+    quantity: int = Form(1)
+):
+    """
+    Check the impact of adding an item before actually adding it
+    
+    Returns:
+        - Whether item can be added
+        - Impact on budget
+        - Clear explanation and suggestions
+    """
+    try:
+        from app.services.explainable_ai_service import explainable_ai_service
+        
+        cart = cart_service.get_cart(session_id)
+        if not cart:
+            raise HTTPException(status_code=404, detail="Cart not found")
+        
+        # Get product from database
+        db_product = product_db.get_product_by_id(int(product_id))
+        if not db_product:
+            raise HTTPException(status_code=404, detail="Product not found")
+        
+        # Convert to Product schema
+        product = Product(
+            id=str(db_product['product_id']),
+            name=db_product['name'],
+            description=db_product['description'],
+            category=db_product['category'],
+            price=db_product['price'],
+            market=db_product['market'],
+            image_path=db_product.get('image_url'),
+            specs=None,
+            brand=db_product.get('brand')
+        )
+        
+        # Analyze impact
+        impact = explainable_ai_service.explain_item_impact(cart, product, quantity)
+        
+        return impact
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Impact check failed: {str(e)}")
+
+
+@router.post("/cart/get-optimization")
+async def get_optimization_suggestions(
+    session_id: str = Form(...)
+):
+    """
+    Get AI-powered optimization suggestions with clear explanations
+    
+    Returns:
+        - Budget status
+        - Smart alternatives (remove, replace, reduce quantity)
+        - Clear explanations for each suggestion
+    """
+    try:
+        # Get all products for alternatives
+        all_products_db = product_db.get_all_products(limit=1000)
+        
+        # Convert to Product schema
+        all_products = []
+        for db_prod in all_products_db:
+            product = Product(
+                id=str(db_prod['product_id']),
+                name=db_prod['name'],
+                description=db_prod['description'],
+                category=db_prod['category'],
+                price=db_prod['price'],
+                market=db_prod['market'],
+                image_path=db_prod.get('image_url'),
+                specs=None,
+                brand=db_prod.get('brand')
+            )
+            all_products.append(product)
+        
+        # Get optimization suggestions
+        optimization = await cart_service.get_optimization_suggestions(
+            session_id,
+            all_products
+        )
+        
+        return optimization
+    
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Optimization failed: {str(e)}")
+
+
+@router.get("/cart/budget-status/{session_id}")
+async def get_budget_status(session_id: str):
+    """
+    Get detailed budget status with explanations
+    
+    Returns:
+        - Status: safe, warning, or over
+        - Percentage used
+        - Clear explanation
+        - Actionable recommendations
+    """
+    try:
+        from app.services.explainable_ai_service import explainable_ai_service
+        
+        cart = cart_service.get_cart(session_id)
+        if not cart:
+            raise HTTPException(status_code=404, detail="Cart not found")
+        
+        budget_status = explainable_ai_service.analyze_budget_status(cart)
+        
+        return budget_status
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Budget status check failed: {str(e)}")

@@ -140,12 +140,10 @@ class HybridSearchService:
             query_vector=image_embedding,
             max_price=None,
             category=None,
+            market=market,
             limit=limit * 2,  # Get 2x for re-ranking
             use_mmr=False  # Disable MMR for pure similarity
         )
-        
-        # Filter by market
-        visual_results = [r for r in visual_results if r["payload"]["market"] == market]
         
         # Step 2: Calculate text similarity using CLIP multimodal embeddings
         hybrid_results = []
@@ -236,12 +234,10 @@ class HybridSearchService:
                 query_vector=text_embedding,  # Text vector searching image vectors!
                 max_price=None,
                 category=None,
+                market=market,
                 limit=limit * 2,
                 use_mmr=False
             )
-            
-            # Filter by market
-            results = [r for r in results if r["payload"]["market"] == market]
             
             return results[:limit]
             

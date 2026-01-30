@@ -19,10 +19,10 @@ class QdrantService:
                 prefer_grpc=False,  # Use REST API
                 https=True
             )
-            print(f"✓ Connected to Qdrant Cloud")
+            print(f"[OK] Connected to Qdrant Cloud")
         except Exception as e:
-            print(f"❌ Qdrant Cloud connection failed: {e}")
-            print(f"⚠️ Shopping Mode will use SQLite fallback")
+            print(f"[ERROR] Qdrant Cloud connection failed: {e}")
+            print(f"[WARNING] Shopping Mode will use SQLite fallback")
             # Don't raise - allow app to continue with SQLite fallback
             self.client = None
         
@@ -129,6 +129,7 @@ class QdrantService:
         query_vector: List[float],
         max_price: Optional[float] = None,
         category: Optional[str] = None,
+        market: Optional[str] = None,
         limit: int = 10,
         use_mmr: bool = True
     ) -> List[Dict[str, Any]]:
@@ -140,7 +141,7 @@ class QdrantService:
         
         # Check if client is available
         if self.client is None:
-            print("  ⚠️ Qdrant client not available, returning empty results")
+            print("  [WARNING] Qdrant client not available, returning empty results")
             return []
         
         query_filter = None
@@ -160,6 +161,14 @@ class QdrantService:
                 FieldCondition(
                     key="category",
                     match={"value": category}
+                )
+            )
+        
+        if market:
+            conditions.append(
+                FieldCondition(
+                    key="market",
+                    match={"value": market}
                 )
             )
         
