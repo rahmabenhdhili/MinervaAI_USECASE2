@@ -12,6 +12,20 @@ class MarketingService:
     
     def __init__(self, debug: bool = False):
         settings = get_settings()
+        
+        # Initialize Groq client with error handling for compatibility issues
+        try:
+            self.client = Groq(api_key=settings.groq_api_key)
+        except TypeError as e:
+            if "proxies" in str(e):
+                # Handle compatibility issue with httpx and proxies
+                import httpx
+                # Create a custom httpx client without proxies
+                http_client = httpx.Client()
+                self.client = Groq(api_key=settings.groq_api_key, http_client=http_client)
+            else:
+                raise e
+        
         self.client = Groq(api_key=settings.groq_api_key)
         self.model = settings.groq_model
         self.debug = debug

@@ -7,6 +7,11 @@ class Settings:
     # Qdrant Cloud Configuration
     QDRANT_URL: str = os.getenv("QDRANT_URL", "")
     QDRANT_API_KEY: str = os.getenv("QDRANT_API_KEY", "")
+    QDRANT_COLLECTION_NAME: str = os.getenv("QDRANT_COLLECTION_USERSHOP", os.getenv("Qdrant_Collection_usershop", "products"))
+    
+    # Groq LLM Configuration
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
+    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
     QDRANT_COLLECTION_NAME: str = os.getenv("Qdrant_Collection_usershop", "")
     
     # Groq LLM Configuration

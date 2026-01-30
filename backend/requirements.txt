@@ -1,3 +1,23 @@
+# ==================== CORE FRAMEWORK ====================
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-multipart>=0.0.6
+
+# ==================== DATABASE ====================
+# Vector Database
+qdrant-client>=1.7.0
+
+# MongoDB (for B2B)
+motor>=3.3.0  # Async MongoDB driver
+
+# ==================== AI/ML ====================
+# Embeddings
+fastembed>=0.2.0  # Qdrant-compatible embeddings
+
+# LLM
+groq>=0.4.0  # Groq API for Llama 3.3 70B
+
+# Optional: Transformers (if using HuggingFace models)
 fastapi
 uvicorn
 qdrant-client
@@ -19,6 +39,45 @@ transformers>=4.35.0
 torch>=2.1.0
 sentence-transformers>=2.2.0
 
+# ==================== WEB SCRAPING ====================
+# HTTP Clients
+httpx>=0.25.0  # Async HTTP client
+requests>=2.31.0  # Sync HTTP client
+
+# HTML Parsing
+beautifulsoup4>=4.12.0
+lxml>=4.9.0  # Fast XML/HTML parser
+
+# Advanced Scraping
+crawl4ai>=0.3.0  # AI-powered web crawler
+selenium>=4.15.0  # Browser automation
+firecrawl-py>=0.0.5  # Firecrawl API client
+
+# ==================== IMAGE PROCESSING ====================
+Pillow>=10.0.0  # Image manipulation
+pytesseract>=0.3.10  # OCR
+
+# ==================== AUTHENTICATION & SECURITY ====================
+python-jose[cryptography]>=3.3.0  # JWT tokens
+passlib[bcrypt]>=1.7.4  # Password hashing
+bcrypt>=4.0.0  # Bcrypt hashing
+
+# ==================== DATA PROCESSING ====================
+pandas>=2.0.0  # CSV processing
+numpy>=1.24.0  # Numerical operations
+
+# ==================== UTILITIES ====================
+python-dotenv>=1.0.0  # Environment variables
+pydantic>=2.5.0  # Data validation
+pydantic-settings>=2.1.0  # Settings management
+email-validator>=2.0.0  # Email validation for pydantic
+
+# ==================== OPTIONAL DEPENDENCIES ====================
+# Redis (for caching - optional)
+# redis>=5.0.0
+
+# Celery (for background tasks - optional)
+# celery>=5.3.0
 # API
 fastapi>=0.104.0
 uvicorn>=0.24.0

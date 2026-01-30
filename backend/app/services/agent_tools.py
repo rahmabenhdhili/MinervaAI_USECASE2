@@ -89,6 +89,35 @@ class DatabaseQueryTool(AgentTool):
             # Strategy 2: Pure visual search
             elif query_vector:
                 reasoning.append("Using pure visual search")
+                try:
+                    results = qdrant_service.search_products(
+                        collection_name=settings.COLLECTION_SUPERMARKET,
+                        query_vector=query_vector,
+                        max_price=max_price,
+                        category=category,
+                        market=market,
+                        limit=limit,
+                        use_mmr=False
+                    )
+                except Exception as e:
+                    results = []
+                
+                # Try without market filter if no results
+                if len(results) == 0 and market:
+                    try:
+                        results = qdrant_service.search_products(
+                            collection_name=settings.COLLECTION_SUPERMARKET,
+                            query_vector=query_vector,
+                            max_price=max_price,
+                            category=category,
+                            market=None,  # No market filter
+                            limit=limit,
+                            use_mmr=False
+                        )
+                        if results:
+                            reasoning.append(f"Found products in other markets (no {market} products)")
+                    except Exception as e:
+                        results = []
                 results = qdrant_service.search_products(
                     collection_name=settings.COLLECTION_SUPERMARKET,
                     query_vector=query_vector,

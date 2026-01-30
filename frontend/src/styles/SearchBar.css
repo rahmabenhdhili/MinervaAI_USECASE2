@@ -1,0 +1,106 @@
+.search-bar {
+  display: flex;
+  gap: 1rem;
+  background: var(--foam);
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(63, 136, 114, 0.1);
+  border: 1px solid var(--pixie-green);
+  backdrop-filter: blur(10px);
+}
+
+.search-input {
+  flex: 1;
+  padding: 1.2rem;
+  border: 2px solid var(--pixie-green);
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  color: var(--viridian);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--viridian);
+  box-shadow: 0 0 0 3px var(--viridian-light);
+  transform: translateY(-1px);
+}
+
+.search-input:disabled {
+  background: var(--shadow-green-light);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.search-input::placeholder {
+  color: var(--shadow-green);
+}
+
+.search-button {
+  padding: 1.2rem 2.5rem;
+  background: linear-gradient(135deg, var(--viridian) 0%, var(--silver-tree) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.search-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.search-button:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.search-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(63, 136, 114, 0.3);
+  background: linear-gradient(135deg, var(--silver-tree) 0%, var(--de-york) 100%);
+}
+
+.search-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.search-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: var(--shadow-green);
+}
+
+.search-button:disabled::before {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column;
+    padding: 1.2rem;
+    border-radius: 16px;
+  }
+
+  .search-input {
+    padding: 1rem;
+  }
+
+  .search-button {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+}

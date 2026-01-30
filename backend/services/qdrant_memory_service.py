@@ -146,6 +146,22 @@ class QdrantMemoryService:
         start_time = time.time()
         
         # Recherche vectorielle avec Qdrant
+        try:
+            # Try the newer query API
+            results = self.client.query_points(
+                collection_name=collection_name,
+                query=query_embedding,
+                limit=limit,
+                score_threshold=score_threshold
+            ).points
+        except AttributeError:
+            # Fallback to search API
+            results = self.client.search(
+                collection_name=collection_name,
+                query_vector=query_embedding,
+                limit=limit,
+                score_threshold=score_threshold
+            )
         results = self.client.search(
             collection_name=collection_name,
             query_vector=query_embedding,

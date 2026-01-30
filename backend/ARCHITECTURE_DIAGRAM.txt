@@ -1,0 +1,338 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    MINERVA AI UNIFIED PLATFORM ARCHITECTURE                  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                              FRONTEND LAYER                                   │
+│                         (React / Vue / Angular)                               │
+└────────────────────────────────┬─────────────────────────────────────────────┘
+                                 │
+                                 │ HTTP Requests
+                                 │
+┌────────────────────────────────▼─────────────────────────────────────────────┐
+│                         UNIFIED FASTAPI SERVER                                │
+│                          (main_unified.py)                                    │
+│                           Port: 8000                                          │
+│                                                                               │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                        API ROUTER                                    │    │
+│  │                                                                      │    │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────┐│    │
+│  │  │  /api/b2c/*  │  │  /api/b2b/*  │  │/api/usershop/│  │/shopgpt/││    │
+│  │  │              │  │              │  │      *       │  │   *     ││    │
+│  │  │  B2C         │  │  B2B         │  │  Usershop    │  │ShopGPT  ││    │
+│  │  │  Marketplace │  │  Supplier    │  │  Recommend   │  │ Image   ││    │
+│  │  │              │  │  Search      │  │              │  │ Search  ││    │
+│  │  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └────┬────┘│    │
+│  └─────────┼──────────────────┼──────────────────┼───────────────┼─────┘    │
+│            │                  │                  │               │           │
+└────────────┼──────────────────┼──────────────────┼───────────────┼───────────┘
+             │                  │                  │               │
+             │                  │                  │               │
+┌────────────▼──────────────────▼──────────────────▼───────────────▼───────────┐
+│                           SERVICE LAYER                                       │
+│                                                                               │
+│  ┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐ │
+│  │   B2C SERVICES      │  │   B2B SERVICES      │  │ USERSHOP SERVICES   │ │
+│  │                     │  │                     │  │                     │ │
+│  │ • Recommendation    │  │ • EmbeddingAgent    │  │ • Database          │ │
+│  │ • RealtimeSearch    │  │ • SearchAgent       │  │ • LLM Service       │ │
+│  │ • Marketing         │  │ • PriceOptimizer    │  │ • DataLoader        │ │
+│  │ • Marketplace       │  │ • Groq Explainer    │  │ • Advanced Scoring  │ │
+│  │ • Order             │  │ • Auth (JWT)        │  │                     │ │
+│  │ • Settings          │  │                     │  │                     │ │
+│  └──────────┬──────────┘  └──────────┬──────────┘  └──────────┬──────────┘ │
+│             │                        │                         │            │
+└─────────────┼────────────────────────┼─────────────────────────┼────────────┘
+              │                        │                         │
+              │                        │                         │
+┌─────────────▼────────────────────────▼─────────────────────────▼────────────┐
+│                          EXTERNAL SERVICES                                    │
+│                                                                               │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐   │
+│  │   QDRANT     │  │    GROQ      │  │   MONGODB    │  │  SCRAPING    │   │
+│  │   CLOUD      │  │    API       │  │              │  │   APIS       │   │
+│  │              │  │              │  │              │  │              │   │
+│  │ • Vector DB  │  │ • LLM        │  │ • User Data  │  │ • ScraperAPI │   │
+│  │ • Embeddings │  │ • Llama 3.3  │  │ • Events     │  │ • Firecrawl  │   │
+│  │ • Similarity │  │ • 70B Model  │  │ • Auth       │  │              │   │
+│  │              │  │              │  │              │  │              │   │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘   │
+│                                                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                          DATA STORAGE LAYER                                   │
+│                                                                               │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐   │
+│  │ JSON FILES   │  │ QDRANT       │  │ MONGODB      │  │ SQLITE       │   │
+│  │              │  │ COLLECTIONS  │  │ COLLECTIONS  │  │              │   │
+│  │ • marketplace│  │              │  │              │  │ • ShopGPT    │   │
+│  │   _products  │  │ • b2b        │  │ • users      │  │   products   │   │
+│  │   .json      │  │   _premium   │  │ • events     │  │              │   │
+│  │              │  │              │  │              │  │              │   │
+│  │ • orders     │  │ • usershop   │  │              │  │              │   │
+│  │   .json      │  │              │  │              │  │              │   │
+│  │              │  │ • shopgpt    │  │              │  │              │   │
+│  │ • settings   │  │              │  │              │  │              │   │
+│  │   .json      │  │ • temp_*     │  │              │  │              │   │
+│  │              │  │   (ephemeral)│  │              │  │              │   │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘   │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                          REQUEST FLOW EXAMPLE                                 ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+USER SEARCHES FOR "GAMING LAPTOP" (B2C)
+───────────────────────────────────────
+
+1. Frontend → POST /api/b2c/search/semantic
+                    ↓
+2. FastAPI Router → B2C Handler
+                    ↓
+3. RealtimeSearchService
+   ├─→ Scrape Amazon (parallel)
+   ├─→ Scrape Alibaba (parallel)
+   ├─→ Scrape Walmart (parallel)
+   └─→ Scrape Cdiscount (parallel)
+                    ↓
+4. FastEmbed → Generate embeddings (384-dim)
+                    ↓
+5. Qdrant :memory: → Create temp collection
+                    ↓
+6. Insert products → Temporary storage (RAM only)
+                    ↓
+7. Vector Search → Cosine similarity
+                    ↓
+8. Groq LLM → Generate recommendations
+                    ↓
+9. Delete temp collection → Cleanup (audit-compliant)
+                    ↓
+10. Return results → Frontend
+
+
+USER SEARCHES FOR SUPPLIERS (B2B)
+──────────────────────────────────
+
+1. Frontend → POST /api/b2b/search (with JWT token)
+                    ↓
+2. FastAPI Router → Verify JWT → B2B Handler
+                    ↓
+3. Log search event → MongoDB
+                    ↓
+4. SearchAgent → Qdrant vector search
+                    ↓
+5. PriceOptimizer → Calculate total costs
+                    ↓
+6. Groq Explainer → Generate explanation
+                    ↓
+7. Return best supplier + alternatives → Frontend
+
+
+USER GETS RECOMMENDATIONS (USERSHOP)
+─────────────────────────────────────
+
+1. Frontend → POST /api/usershop/recommend
+                    ↓
+2. FastAPI Router → Usershop Handler
+                    ↓
+3. Create search query → LLM Service
+                    ↓
+4. Vector search → Qdrant (100 products)
+                    ↓
+5. Advanced scoring:
+   ├─→ Vector similarity (30 pts)
+   ├─→ Name matching (25 pts)
+   ├─→ Category matching (20 pts)
+   ├─→ Description matching (15 pts)
+   └─→ Price relevance (10 pts)
+                    ↓
+6. Filter by price range
+                    ↓
+7. Remove duplicates
+                    ↓
+8. Sort (relevance/price)
+                    ↓
+9. Groq LLM → Generate descriptions
+                    ↓
+10. Return recommendations → Frontend
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                        SHARED RESOURCES                                       ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                          QDRANT CLOUD                                         │
+│                                                                               │
+│  Collection: minerva_b2b_premium                                              │
+│  ├─→ Used by: B2C (persistent)                                               │
+│  └─→ Used by: B2B (persistent)                                               │
+│                                                                               │
+│  Collection: minerva_usershop                                                 │
+│  └─→ Used by: Usershop (persistent)                                          │
+│                                                                               │
+│  Collection: temp_search_*                                                    │
+│  └─→ Used by: B2C Real-time Search (ephemeral, deleted after use)            │
+│                                                                               │
+│  Collection: shopgpt_*                                                        │
+│  └─→ Used by: ShopGPT (image embeddings)                                     │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                          GROQ API                                             │
+│                                                                               │
+│  Model: Llama 3.3 70B Versatile                                               │
+│  ├─→ B2C: Intent analysis, recommendations, marketing                        │
+│  ├─→ B2B: Supplier explanations                                              │
+│  ├─→ Usershop: Product descriptions, comparisons                             │
+│  └─→ ShopGPT: Product analysis                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                          FASTEMBED                                            │
+│                                                                               │
+│  Model: BAAI/bge-small-en-v1.5 (384 dimensions)                              │
+│  ├─→ B2C: Product embeddings                                                 │
+│  ├─→ B2B: Supplier embeddings                                                │
+│  └─→ Usershop: Product embeddings                                            │
+│                                                                               │
+│  Note: ShopGPT uses SigLIP for image embeddings (768 dimensions)             │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                        DEPLOYMENT OPTIONS                                     ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+OPTION 1: UNIFIED (RECOMMENDED FOR DEVELOPMENT)
+────────────────────────────────────────────────
+┌─────────────────────────────────────────┐
+│     Single Process (main_unified.py)    │
+│                                         │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐│
+│  │   B2C   │  │   B2B   │  │Usershop ││
+│  └─────────┘  └─────────┘  └─────────┘│
+│                                         │
+│         Port 8000 (All Services)        │
+└─────────────────────────────────────────┘
+
+Pros: Simple, all features, shared resources
+Cons: Higher memory, single point of failure
+
+
+OPTION 2: MICROSERVICES (PRODUCTION)
+─────────────────────────────────────
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│  B2C Service │  │  B2B Service │  │Usershop Svc  │
+│  Port 8001   │  │  Port 8002   │  │  Port 8003   │
+└──────┬───────┘  └──────┬───────┘  └──────┬───────┘
+       │                 │                  │
+       └─────────────────┼──────────────────┘
+                         │
+                ┌────────▼────────┐
+                │  Load Balancer  │
+                │   (Nginx/HAP)   │
+                │   Port 8000     │
+                └─────────────────┘
+
+Pros: Better isolation, independent scaling
+Cons: More complex, higher resource usage
+
+
+OPTION 3: DOCKER COMPOSE (BEST FOR PRODUCTION)
+───────────────────────────────────────────────
+┌─────────────────────────────────────────────┐
+│          Docker Compose                     │
+│                                             │
+│  ┌─────────────────────────────────────┐   │
+│  │  unified-app (main_unified.py)      │   │
+│  │  Port: 8000                         │   │
+│  └─────────────────────────────────────┘   │
+│                                             │
+│  ┌─────────────────────────────────────┐   │
+│  │  mongodb                            │   │
+│  │  Port: 27017                        │   │
+│  └─────────────────────────────────────┘   │
+│                                             │
+│  ┌─────────────────────────────────────┐   │
+│  │  redis (optional caching)           │   │
+│  │  Port: 6379                         │   │
+│  └─────────────────────────────────────┘   │
+└─────────────────────────────────────────────┘
+
+Pros: Easy deployment, reproducible, scalable
+Cons: Requires Docker knowledge
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                        PERFORMANCE METRICS                                    ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+STARTUP TIME
+────────────
+B2C Services:        2-3 seconds
+B2B Services:        1-2 seconds
+Usershop Services:   3-5 seconds (with auto-load)
+ShopGPT Services:    2-3 seconds
+─────────────────────────────────
+TOTAL:               8-13 seconds
+
+
+MEMORY USAGE
+────────────
+B2C:                 200-300 MB
+B2B:                 100-150 MB
+Usershop:            150-200 MB
+ShopGPT:             300-400 MB
+─────────────────────────────────
+TOTAL:               750 MB - 1 GB
+
+
+REQUEST LATENCY
+───────────────
+B2C Search:          5-15 seconds (scraping + AI)
+B2B Search:          1-3 seconds (database + AI)
+Usershop Recommend:  2-5 seconds (vector search + AI)
+ShopGPT:             3-8 seconds (image processing + AI)
+
+
+THROUGHPUT (Concurrent Requests)
+─────────────────────────────────
+B2C:                 ~10 req/sec
+B2B:                 ~50 req/sec
+Usershop:            ~30 req/sec
+ShopGPT:             ~15 req/sec
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                        QUICK REFERENCE                                        ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+START SERVER
+────────────
+python main_unified.py
+
+API DOCUMENTATION
+─────────────────
+http://localhost:8000/docs
+
+HEALTH CHECK
+────────────
+http://localhost:8000/health
+
+SERVICE ENDPOINTS
+─────────────────
+B2C:       /api/b2c/*
+B2B:       /api/b2b/*
+Usershop:  /api/usershop/*
+ShopGPT:   /api/shopgpt/*
+
+CONFIGURATION
+─────────────
+.env file in backend/ directory
+
+LOGS
+────
+Console output (stdout/stderr)
+

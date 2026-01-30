@@ -274,6 +274,33 @@ class RealtimeSemanticSearchService:
             return {
                 "success": True,
                 "query": user_query,
+                "products": [
+                    {
+                        **result["product"],
+                        "score": result["score"],
+                        "metadata": {
+                            **(result["product"].get("metadata", {})),
+                            "source": result["product"].get("source", "unknown")
+                        }
+                    } for result in search_results
+                ],  # Frontend expects 'products'
+                "results": search_results,  # Keep original for compatibility
+                "total_found": len(products),
+                "total_returned": len(search_results),
+                "pipeline_time_seconds": pipeline_time,
+                "summary": f"Found {len(search_results)} products matching '{user_query}' from {len(products)} scraped items",
+                "intent": {
+                    "product_type": user_query,
+                    "search_terms": user_query.split(),
+                    "platforms_used": [
+                        platform for platform, enabled in [
+                            ("Amazon", use_amazon),
+                            ("Alibaba", use_alibaba), 
+                            ("Walmart", use_walmart),
+                            ("Cdiscount", use_cdiscount)
+                        ] if enabled
+                    ]
+                },
                 "results": search_results,
                 "total_found": len(products),
                 "total_returned": len(search_results),

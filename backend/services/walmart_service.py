@@ -19,6 +19,18 @@ class WalmartService:
         settings = get_settings()
         # 🔐 CLÉ API FIRECRAWL - Utiliser la clé dédiée Walmart, sinon la clé par défaut
         api_key = settings.firecrawl_api_key_walmart or settings.firecrawl_api_key
+        
+        # Initialize Firecrawl only if API key is provided
+        if api_key:
+            self.app = FirecrawlApp(api_key=api_key)
+        else:
+            self.app = None
+            if debug:
+                print(f"⚠️ Walmart Service: No Firecrawl API key - service disabled")
+        
+        self.debug = debug
+        
+        if debug and self.app:
         self.app = FirecrawlApp(api_key=api_key)
         self.debug = debug
         

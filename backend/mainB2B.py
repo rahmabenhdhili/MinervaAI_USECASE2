@@ -9,6 +9,7 @@ from scripts.price_optimizeB2B import PriceOptimizer
 import os
 from datetime import datetime
 from fastapi import Depends
+from app.database_sqlite import get_events_collection
 from app.database import get_events_collection
 from app.core.security import get_current_user_id  # JWT helper
 
@@ -49,6 +50,12 @@ async def search_best_supplier_endpoint(
     req: SearchRequest,
     user_id: str = Depends(get_current_user_id)  # <-- automatically extract user from JWT
 ):
+    # --- 1️⃣ Log search in SQLite automatically ---
+    events_db = get_events_collection()
+    event_id = events_db.track_event({
+        "user_id": user_id,
+        "event_type": "search",
+        "content": req.product_name
     # --- 1️⃣ Log search in Mongo automatically ---
     events = get_events_collection()
     await events.insert_one({
@@ -101,6 +108,13 @@ async def click_endpoint(
     req: ClickRequest,
     user_id: str = Depends(get_current_user_id)
 ):
+    events_db = get_events_collection()
+    event_id = events_db.track_event({
+        "user_id": user_id,
+        "event_type": "click",
+        "content": req.product_name
+    })
+    return {"status": "ok", "message": "Click recorded automatically", "event_id": event_id}
     events = get_events_collection()
     await events.insert_one({
         "user_id": user_id,
