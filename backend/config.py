@@ -12,7 +12,9 @@ class Settings(BaseSettings):
     # Qdrant Cloud
     qdrant_url: str
     qdrant_api_key: str
-    collection_name: str = "products"
+    qdrant_collection_b2bpremium: str
+    qdrant_collection_usershop: str
+
     
     # Embedding Model (FastEmbed)
     embedding_model: str = "BAAI/bge-small-en-v1.5"

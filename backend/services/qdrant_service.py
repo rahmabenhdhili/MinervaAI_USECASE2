@@ -15,7 +15,7 @@ class QdrantService:
             url=settings.qdrant_url,
             api_key=settings.qdrant_api_key
         )
-        self.collection_name = settings.collection_name
+        self.collection_name = settings.qdrant_collection_b2bpremium
         self.vector_size = settings.embedding_dimension
     
     async def initialize_collection(self):

@@ -12,9 +12,9 @@
       "added_at": "2026-01-28T03:25:27.276Z"
     },
     "created_at": "2026-01-28T04:25:27.286165",
-    "updated_at": "2026-01-29T19:30:33.185995",
+    "updated_at": "2026-01-30T16:22:00.053780",
     "status": "active",
-    "clicks": 4
+    "clicks": 6
   },
   {
     "id": "54d70812-09e8-4d8a-b974-e8d5d2b6c901",
@@ -46,9 +46,9 @@
       "added_at": "2026-01-28T14:26:27.276Z"
     },
     "created_at": "2026-01-28T15:26:27.591581",
-    "updated_at": "2026-01-29T19:30:30.390668",
+    "updated_at": "2026-01-30T16:21:52.689210",
     "status": "active",
-    "clicks": 4
+    "clicks": 6
   },
   {
     "id": "b62b5e8f-a000-4079-b781-2038b9427182",
@@ -66,9 +66,9 @@
       "added_at": "2026-01-29T02:18:58.543Z"
     },
     "created_at": "2026-01-29T03:18:58.861258",
-    "updated_at": "2026-01-29T19:30:27.903204",
+    "updated_at": "2026-01-30T16:22:00.937333",
     "status": "active",
-    "clicks": 6
+    "clicks": 8
   },
   {
     "id": "a271bf78-c13c-4452-80b6-179448dba16f",
@@ -86,9 +86,9 @@
       "added_at": "2026-01-29T15:39:37.639Z"
     },
     "created_at": "2026-01-29T16:39:37.961143",
-    "updated_at": "2026-01-29T19:30:34.878456",
+    "updated_at": "2026-01-30T16:22:07.048973",
     "status": "active",
-    "clicks": 4
+    "clicks": 6
   },
   {
     "id": "4e4e0a23-20b9-4c47-9996-63214b7d4bf5",
@@ -106,9 +106,9 @@
       "added_at": "2026-01-29T16:27:10.913Z"
     },
     "created_at": "2026-01-29T17:27:10.932299",
-    "updated_at": "2026-01-29T19:30:36.327209",
+    "updated_at": "2026-01-30T16:22:12.319152",
     "status": "active",
-    "clicks": 6
+    "clicks": 10
   },
   {
     "id": "9a474139-d58f-4e32-b224-7a8ff7151a68",
@@ -129,9 +129,9 @@
       "added_at": "2026-01-29T19:16:55.716Z"
     },
     "created_at": "2026-01-29T20:16:56.029263",
-    "updated_at": "2026-01-29T20:16:56.029272",
+    "updated_at": "2026-01-30T16:22:11.230659",
     "status": "active",
-    "clicks": 0,
+    "clicks": 4,
     "views": 0
   },
   {
@@ -153,9 +153,9 @@
       "added_at": "2026-01-29T19:17:19.511Z"
     },
     "created_at": "2026-01-29T20:17:19.515238",
-    "updated_at": "2026-01-29T20:17:57.598806",
+    "updated_at": "2026-01-30T16:22:03.224208",
     "status": "active",
-    "clicks": 2,
+    "clicks": 4,
     "views": 0
   },
   {
@@ -178,6 +178,54 @@
     },
     "created_at": "2026-01-29T22:39:31.330666",
     "updated_at": "2026-01-29T22:39:31.330666",
+    "status": "active",
+    "clicks": 0,
+    "views": 0
+  },
+  {
+    "id": "e6aefc74-e181-4466-80ff-9bb6e975f8fa",
+    "name": "Uliptz Wireless Bluetooth Headphones, 65H Playtime, 6 EQ Sound Modes, HiFi Stereo Over Ear Headphones with Microphone, Foldable Lightweight Bluetooth 5.3 Headphone for Travel/Office/Cellphone/PC",
+    "description": "Uliptz Wireless Bluetooth Headphones, 65H Playtime, 6 EQ Sound Modes, HiFi Stereo Over Ear Headphones with Microphone, Foldable Lightweight Bluetooth 5.3 Headphone for Travel/Office/Cellphone/PC - Amazon Product",
+    "price": 21.0,
+    "cost": 15.0,
+    "profit": 6.0,
+    "profit_margin": 40.0,
+    "image_url": "https://m.media-amazon.com/images/I/61-ZTbzw6oL._AC_UY218_.jpg",
+    "category": "product",
+    "metadata": {
+      "original_source": "amazon",
+      "original_url": "https://www.amazon.com/dp/B09NNBBY8F",
+      "original_price": 15,
+      "margin_percentage": 40,
+      "margin_amount": 6,
+      "added_at": "2026-01-30T15:14:35.569Z"
+    },
+    "created_at": "2026-01-30T16:14:35.883877",
+    "updated_at": "2026-01-30T16:14:35.883891",
+    "status": "active",
+    "clicks": 0,
+    "views": 0
+  },
+  {
+    "id": "c37ece14-fa75-4a80-b7e4-34ec4595e8fd",
+    "name": "Montessori Game Wooden Board Game, 42 Colorful Wooden Sticks Dice Game Math Educational Toys for 3 4 5 6 Years Old, Fine Motor Skills Toys & Counting Toy Family Game Travel Toys Gifts for Kids",
+    "description": "Montessori Game Wooden Board Game, 42 Colorful Wooden Sticks Dice Game Math Educational Toys for 3 4 5 6 Years Old, Fine Motor Skills Toys & Counting Toy Family Game Travel Toys Gifts for Kids - Amazon Product",
+    "price": 30.0,
+    "cost": 19.0,
+    "profit": 11.0,
+    "profit_margin": 57.89473684210527,
+    "image_url": "https://m.media-amazon.com/images/I/71EHTFaRjhL._AC_UY218_.jpg",
+    "category": "product",
+    "metadata": {
+      "original_source": "amazon",
+      "original_url": "https://www.amazon.com/dp/B0CQN1R9KZ",
+      "original_price": 19,
+      "margin_percentage": 57.9,
+      "margin_amount": 11,
+      "added_at": "2026-01-30T15:19:05.014Z"
+    },
+    "created_at": "2026-01-30T16:19:05.321848",
+    "updated_at": "2026-01-30T16:19:05.321865",
     "status": "active",
     "clicks": 0,
     "views": 0
