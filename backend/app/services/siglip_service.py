@@ -1,4 +1,5 @@
 from transformers import AutoModel, AutoImageProcessor
+from transformers import AutoProcessor, AutoModel
 from PIL import Image, ImageEnhance, ImageOps
 import torch
 from typing import List
@@ -26,6 +27,8 @@ class SigLIPService:
             print(f"[ERROR] Failed to load SigLIP: {e}")
             raise
         
+        self.model = AutoModel.from_pretrained(self.model_name)
+        self.processor = AutoProcessor.from_pretrained(self.model_name)
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model.to(self.device)
         self.model.eval()
@@ -52,6 +55,8 @@ class SigLIPService:
             
             # Process image for SigLIP using image processor
             inputs = self.image_processor(images=image, return_tensors="pt")
+            # Process image for SigLIP
+            inputs = self.processor(images=image, return_tensors="pt")
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
             
             # Generate embedding
@@ -73,6 +78,8 @@ class SigLIPService:
                 
                 # Normalize for cosine similarity
                 image_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                # Normalize for cosine similarity
+                image_features = outputs / outputs.norm(dim=-1, keepdim=True)
             
             return image_features.cpu().numpy()[0].tolist()
         
@@ -152,6 +159,7 @@ class SigLIPService:
         """Generate embedding for text (for cross-modal search)"""
         try:
             inputs = self.tokenizer(text=[text], return_tensors="pt", padding=True)
+            inputs = self.processor(text=[text], return_tensors="pt", padding=True)
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
             
             with torch.no_grad():
@@ -178,3 +186,5 @@ def get_siglip_service():
     if siglip_service is None:
         siglip_service = SigLIPService()
     return siglip_service
+# Singleton instance
+siglip_service = SigLIPService()

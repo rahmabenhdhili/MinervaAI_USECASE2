@@ -162,6 +162,12 @@ class QdrantMemoryService:
                 limit=limit,
                 score_threshold=score_threshold
             )
+        results = self.client.search(
+            collection_name=collection_name,
+            query_vector=query_embedding,
+            limit=limit,
+            score_threshold=score_threshold
+        )
         
         search_time = (time.time() - start_time) * 1000
         print(f"✅ Recherche terminée en {search_time:.2f}ms")

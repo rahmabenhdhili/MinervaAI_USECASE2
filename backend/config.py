@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     # Groq API
     groq_api_key: str
     groq_model: str = "llama-3.3-70b-versatile"
+    groq_model: str = "llama-3.1-70b-versatile"
     
     # Qdrant Cloud
     qdrant_url: str
@@ -17,6 +18,9 @@ class Settings(BaseSettings):
     
     # Backward compatibility
     collection_name: str = "minerva_products_test"  # Old collection name
+    qdrant_collection_b2bpremium: str
+    qdrant_collection_usershop: str
+
     
     # Embedding Model (FastEmbed)
     embedding_model: str = "BAAI/bge-small-en-v1.5"

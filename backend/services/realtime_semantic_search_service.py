@@ -301,6 +301,10 @@ class RealtimeSemanticSearchService:
                         ] if enabled
                     ]
                 },
+                "results": search_results,
+                "total_found": len(products),
+                "total_returned": len(search_results),
+                "pipeline_time_seconds": pipeline_time,
                 "metrics": {
                     "scraping_time": scraping_time,
                     "embedding_time": embedding_time,

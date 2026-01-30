@@ -10,6 +10,7 @@ import os
 from datetime import datetime
 from fastapi import Depends
 from app.database_sqlite import get_events_collection
+from app.database import get_events_collection
 from app.core.security import get_current_user_id  # JWT helper
 
 
@@ -55,6 +56,13 @@ async def search_best_supplier_endpoint(
         "user_id": user_id,
         "event_type": "search",
         "content": req.product_name
+    # --- 1️⃣ Log search in Mongo automatically ---
+    events = get_events_collection()
+    await events.insert_one({
+        "user_id": user_id,
+        "type": "search",
+        "content": req.product_name,
+        "timestamp": datetime.utcnow()
     })
 
     # --- 2️⃣ Call teammate's search agent ---
@@ -107,6 +115,14 @@ async def click_endpoint(
         "content": req.product_name
     })
     return {"status": "ok", "message": "Click recorded automatically", "event_id": event_id}
+    events = get_events_collection()
+    await events.insert_one({
+        "user_id": user_id,
+        "type": "click",
+        "content": req.product_name,
+        "timestamp": datetime.utcnow()
+    })
+    return {"status": "ok", "message": "Click recorded automatically"}
 
 
 

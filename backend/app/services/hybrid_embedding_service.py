@@ -7,6 +7,7 @@ This service creates embeddings using:
 """
 from typing import Dict, Any, Optional, List
 from app.services.siglip_service import get_siglip_service
+from app.services.siglip_service import siglip_service
 from app.services.ocr_service import get_ocr_service
 import numpy as np
 
@@ -51,6 +52,7 @@ class HybridEmbeddingService:
         # Generate visual embedding (SigLIP)
         siglip = self._get_siglip()
         visual_embedding = siglip.embed_image(image_bytes, preprocess=True)
+        visual_embedding = siglip_service.embed_image(image_bytes, preprocess=True)
         
         # Extract text using OCR
         extracted_text = ""
@@ -134,6 +136,7 @@ class HybridEmbeddingService:
         if image_bytes:
             siglip = self._get_siglip()
             return siglip.embed_image(image_bytes, preprocess=True)
+            return siglip_service.embed_image(image_bytes, preprocess=True)
         else:
             # Return zero vector if no image
             return [0.0] * 768

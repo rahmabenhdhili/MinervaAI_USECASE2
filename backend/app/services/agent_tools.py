@@ -118,6 +118,15 @@ class DatabaseQueryTool(AgentTool):
                             reasoning.append(f"Found products in other markets (no {market} products)")
                     except Exception as e:
                         results = []
+                results = qdrant_service.search_products(
+                    collection_name=settings.COLLECTION_SUPERMARKET,
+                    query_vector=query_vector,
+                    max_price=max_price,
+                    category=category,
+                    market=market,
+                    limit=limit,
+                    use_mmr=False
+                )
             
             # Strategy 3: Fallback to SQLite
             else:

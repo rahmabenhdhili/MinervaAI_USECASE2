@@ -31,6 +31,10 @@ class CdiscountService:
         self.debug = debug
         
         if debug and self.app:
+        self.app = FirecrawlApp(api_key=api_key)
+        self.debug = debug
+        
+        if debug:
             print(f"✅ Cdiscount Service initialisé")
             key_type = "clé dédiée Cdiscount" if settings.firecrawl_api_key_cdiscount else "clé par défaut"
             print(f"   🔥 Firecrawl: ✅ Configuré ({key_type})")

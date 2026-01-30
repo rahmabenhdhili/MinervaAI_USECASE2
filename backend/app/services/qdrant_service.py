@@ -231,6 +231,23 @@ class QdrantService:
                     "score": getattr(hit, 'score', 0.0),
                     "payload": getattr(hit, 'payload', {})
                 })
+        # Use search API (query API signature changed in newer versions)
+        results = self.client.search(
+            collection_name=collection_name,
+            query_vector=query_vector,
+            query_filter=query_filter,
+            limit=limit * 2,  # Get more results for Groq to analyze
+            score_threshold=0.3  # Minimum similarity threshold
+        )
+        
+        # Parse search results
+        formatted_results = []
+        for hit in results:
+            formatted_results.append({
+                "id": hit.id,
+                "score": hit.score,
+                "payload": hit.payload
+            })
         
         return formatted_results
     

@@ -26,6 +26,7 @@ class MarketingService:
             else:
                 raise e
         
+        self.client = Groq(api_key=settings.groq_api_key)
         self.model = settings.groq_model
         self.debug = debug
         

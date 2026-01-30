@@ -31,6 +31,10 @@ class WalmartService:
         self.debug = debug
         
         if debug and self.app:
+        self.app = FirecrawlApp(api_key=api_key)
+        self.debug = debug
+        
+        if debug:
             print(f"✅ Walmart Service initialisé")
             key_type = "clé dédiée Walmart" if settings.firecrawl_api_key_walmart else "clé par défaut"
             print(f"   🔥 Firecrawl: ✅ Configuré ({key_type})")

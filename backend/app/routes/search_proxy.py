@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
 from pydantic import BaseModel
 from app.database_sqlite import get_events_collection
+from app.services.events_service import track_event
 from app.core.auth_utils import get_user_id_from_token
 
 # teammate search imports (READ-ONLY)
@@ -35,6 +36,8 @@ async def search(req: SearchRequest, request: Request):
         "event_type": "search",
         "content": req.query
     })
+    # Step 2: track the search in Mongo
+    await track_event(user_id=user_id, event_type="search", content=req.query)
 
     # Step 3: delegate search to teammate code
     results = search_agent.search(req.query, top_k=req.top_k)

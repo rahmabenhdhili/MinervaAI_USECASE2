@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from datetime import datetime
 from app.database_sqlite import get_events_collection
+from app.database import get_events_collection
 from app.models.event import EventCreate
 
 router = APIRouter(prefix="/events", tags=["events"])
@@ -9,6 +10,7 @@ router = APIRouter(prefix="/events", tags=["events"])
 async def track_event(event: EventCreate):
     """
     Tracks user actions (search or click) and stores them in SQLite.
+    Tracks user actions (search or click) and stores them in MongoDB.
     
     Example for search:
     {
@@ -35,3 +37,15 @@ async def track_event(event: EventCreate):
 
     # Respond with success
     return {"status": "tracked", "event_id": event_id}
+    events = get_events_collection()  # get the events collection
+
+    # Insert the event with timestamp
+    await events.insert_one({
+        "user_id": event.user_id,
+        "type": event.type,
+        "content": event.content,
+        "timestamp": datetime.utcnow()  # store UTC timestamp
+    })
+
+    # Respond with success
+    return {"status": "tracked"}
