@@ -35,7 +35,7 @@
 
 ## 🎯 Project Overview
 
-**MinervaAI - Dinero Platform** is a comprehensive AI-powered shopping ecosystem that revolutionizes how users discover, compare, and purchase products across multiple marketplaces. The platform combines cutting-edge vector search technology with real-time web scraping and intelligent AI recommendations to deliver personalized shopping experiences.
+**Dinero Platform** is a comprehensive AI-powered shopping ecosystem that revolutionizes how users discover, compare, and purchase products across multiple marketplaces. The platform combines cutting-edge vector search technology with real-time web scraping and intelligent AI recommendations to deliver personalized shopping experiences.
 
 ### 🎯 Objectives
 
@@ -604,61 +604,7 @@ curl http://localhost:8000/health
 }
 ```
 
----
 
-## 🚀 Deployment
-
-### 🐳 **Docker Deployment**
-
-```dockerfile
-# Dockerfile
-FROM python:3.10-slim
-
-WORKDIR /app
-COPY backend/requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY backend/ .
-EXPOSE 8000
-
-CMD ["python", "main_unified.py"]
-```
-
-```yaml
-# docker-compose.yml
-version: '3.8'
-services:
-  minerva-backend:
-    build: .
-    ports:
-      - "8000:8000"
-    environment:
-      - QDRANT_URL=${QDRANT_URL}
-      - QDRANT_API_KEY=${QDRANT_API_KEY}
-      - GROQ_API_KEY=${GROQ_API_KEY}
-    volumes:
-      - ./backend:/app
-    
-  minerva-frontend:
-    image: node:18-alpine
-    working_dir: /app
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-    command: sh -c "npm install && npm run dev"
-```
-
-### ☁️ **Cloud Deployment**
-
-**Recommended Platforms:**
-- **Railway**: Easy deployment with automatic builds
-- **Render**: Free tier with automatic SSL
-- **Heroku**: Classic PaaS with add-ons
-- **DigitalOcean App Platform**: Scalable with managed databases
-- **AWS/GCP/Azure**: Full control with container services
-
----
 
 ## 🧪 Testing
 
@@ -710,45 +656,13 @@ DEBUG=true python main_unified.py
 - **CDN**: Use CDN for static assets and images
 - **Load Balancing**: Scale horizontally with multiple instances
 
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
 ### 👥 **Contributors**
 
-- [**Mariem Jlassi**](https://github.com/Maryem-Jlassi) - Lead Developer
-- [**Wassim Guesmi**](https://github.com/zaatar1x) - Backend Architect  
-- [**Rahma Ben Hedhili**](https://github.com/rahmabenhdhili) - Frontend Developer
-- [**Islem Labidi**](https://github.com/islemlabidi0) - AI/ML Engineer
+- [**Mariem Jlassi**](https://github.com/Maryem-Jlassi) - AI Engineering student 
+- [**Wassim Guesmi**](https://github.com/zaatar1x) - DATA SCIENCE SUTDENT
+- [**Rahma Ben Hedhili**](https://github.com/rahmabenhdhili) - DATA SCIENCE SUTDENT
+- [**Islem Labidi**](https://github.com/islemlabidi0) - DATA SCIENCE SUTDENT
 
-### 🐛 **Bug Reports**
-
-Found a bug? Please create an issue with:
-- Clear description of the problem
-- Steps to reproduce
-- Expected vs actual behavior
-- System information (OS, Python version, etc.)
-
-### 💡 **Feature Requests**
-
-Have an idea? We'd love to hear it! Please include:
-- Detailed description of the feature
-- Use case and benefits
-- Possible implementation approach
-
----
-
-
-## 🙏 Acknowledgments
-
-- **Qdrant** for providing excellent vector database technology
-- **Groq** for ultra-fast LLM inference
-- **FastAPI** for the amazing web framework
-- **React** team for the powerful frontend library
-
----
 
 <div align="center">
 
@@ -757,5 +671,6 @@ Have an idea? We'd love to hear it! Please include:
 [🔝 Back to Top](#-minervaai---dinero-platform)
 
 </div>
+
 
 
