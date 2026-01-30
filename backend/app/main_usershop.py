@@ -6,16 +6,18 @@ import os
 import tempfile
 from typing import List
 
-from .config import settings
-from .models import (
+from .config_usershop import settings
+from .models_usershop import (
     Product, 
     RecommendationRequest, 
     RecommendationResponse, 
-    ProductSearchRequest
+    ProductSearchRequest,
+    ProductComparisonRequest,
+    ComparisonResponse
 )
-from .database import db
-from .llm_service_v2 import advanced_llm_service
-from .data_loader import data_loader
+from .database_usershop import db
+from .llm_service_v2_usershop import advanced_llm_service
+from .data_loader_usershop import data_loader
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)
@@ -23,9 +25,9 @@ logger = logging.getLogger(__name__)
 
 # Création de l'application FastAPI
 app = FastAPI(
-    title="Système de Recommandation de Produits",
+    title="Système de Recommandation de Produits Usershop",
     description="API pour recommandations de produits avec IA et base vectorielle",
-    version="1.0.0"
+    version="2.0.0"
 )
 
 # Configuration CORS
@@ -41,7 +43,7 @@ app.add_middleware(
 async def startup_event():
     """Initialisation au démarrage de l'application"""
     try:
-        logger.info("🚀 Démarrage de l'application...")
+        logger.info("🚀 Démarrage de l'application Usershop...")
         
         # Initialiser la collection Qdrant
         await db.initialize_collection()
@@ -92,7 +94,7 @@ async def startup_event():
         else:
             logger.info(f"✅ {products_count} produits déjà présents dans Qdrant")
         
-        logger.info("✅ Application démarrée avec succès")
+        logger.info("✅ Application Usershop démarrée avec succès")
         
     except Exception as e:
         logger.error(f"❌ Erreur lors du démarrage: {e}")
@@ -109,12 +111,14 @@ async def root():
         products_count = 0
     
     return {
-        "message": "Système de Recommandation de Produits avec IA",
-        "version": "1.0.0",
+        "message": "Système de Recommandation de Produits Usershop avec IA",
+        "version": "2.0.0",
+        "service": "usershop",
         "products_loaded": products_count,
         "status": "ready" if products_count > 0 else "no_products",
         "endpoints": {
             "recommend": "/recommend",
+            "compare": "/compare",
             "product": "/product/{id}",
             "add_products": "/add-products",
             "load_from_directory": "/load-from-directory",
@@ -127,7 +131,7 @@ async def root():
 async def get_recommendations(request: RecommendationRequest):
     """
     Génère des recommandations ultra-précises
-    Processus optimisé : 50 résultats → filtrage avancé → 1 principal + 8 recommandations
+    Processus optimisé : 100 résultats → filtrage avancé → tous les produits filtrés
     """
     try:
         logger.info(f"🔍 Nouvelle recherche avec critères: {request.dict()}")
@@ -135,9 +139,10 @@ async def get_recommendations(request: RecommendationRequest):
         # Créer la requête de recherche vectorielle
         search_query = advanced_llm_service.create_search_query(request.dict())
         
-        # Étape 1: Recherche vectorielle large (50 produits pour meilleure couverture)
-        logger.info(f"📡 Recherche vectorielle de 50 produits similaires...")
-        similar_products = await db.search_similar_products(search_query, limit=50)
+        # Étape 1: Recherche vectorielle large (100 produits pour meilleure couverture)
+        search_limit = 100
+        logger.info(f"📡 Recherche vectorielle de {search_limit} produits similaires...")
+        similar_products = await db.search_similar_products(search_query, limit=search_limit)
         
         if not similar_products:
             raise HTTPException(
@@ -146,13 +151,14 @@ async def get_recommendations(request: RecommendationRequest):
             )
         
         logger.info(f"📊 {len(similar_products)} produits trouvés par recherche vectorielle")
+        total_found = len(similar_products)
         
-        # Étape 2: Sélection ultra-précise des 9 meilleurs (1 principal + 8 recommandations)
+        # Étape 2: Sélection ultra-précise avec filtrage prix
         logger.info(f"🎯 Filtrage avancé et scoring...")
         best_products = advanced_llm_service.select_best_products(
             similar_products, 
             request.dict(), 
-            limit=9
+            limit=request.limit  # None = tous les produits
         )
         
         if not best_products:
@@ -161,18 +167,21 @@ async def get_recommendations(request: RecommendationRequest):
                 detail="Aucun produit ne correspond aux critères de prix spécifiés."
             )
         
-        logger.info(f"✨ {len(best_products)} produits sélectionnés après filtrage avancé")
+        total_after_filter = len(best_products)
+        logger.info(f"✨ {total_after_filter} produits sélectionnés après filtrage avancé")
         
         # Produit principal (meilleur score)
         target_product = best_products[0]
-        logger.info(f"🎯 Produit principal: {target_product.get('name')} (score: {target_product.get('relevance_score', 0):.2f})")
+        logger.info(f"🎯 Produit principal: {target_product.get('name')[:50]} (score: {target_product.get('relevance_score', 0):.2f})")
         
         # Étape 3: Génération des recommandations avec IA
         logger.info(f"🤖 Génération des descriptions et recommandations...")
         recommendations = await advanced_llm_service.generate_recommendations(
             target_product, 
-            best_products[1:],  # Les 8 suivants comme recommandations
-            request.dict()
+            best_products[1:],  # Les autres comme recommandations
+            request.dict(),
+            total_found,
+            total_after_filter
         )
         
         logger.info(f"✅ Recommandations générées: 1 principal + {len(recommendations.recommendations)} similaires")
@@ -324,7 +333,7 @@ async def load_products_from_directory(directory: str = "data"):
 @app.get("/health")
 async def health_check():
     """Vérification de l'état de l'API"""
-    return {"status": "healthy", "message": "API fonctionnelle"}
+    return {"status": "healthy", "message": "API Usershop fonctionnelle", "service": "usershop"}
 
 @app.get("/stats")
 async def get_stats():
@@ -333,6 +342,7 @@ async def get_stats():
         collection_info = db.get_collection_info()
         return {
             "status": "ok",
+            "service": "usershop",
             "collection": collection_info,
             "embedding_model": settings.EMBEDDING_MODEL,
             "llm_model": settings.GROQ_MODEL
@@ -341,10 +351,47 @@ async def get_stats():
         logger.error(f"Erreur lors de la récupération des stats: {e}")
         raise HTTPException(status_code=500, detail="Erreur interne du serveur")
 
+@app.post("/compare", response_model=ComparisonResponse)
+async def compare_products(request: ProductComparisonRequest):
+    """
+    Compare deux produits de manière intelligente avec l'IA
+    Analyse technique, avantages/inconvénients, et recommandation
+    """
+    try:
+        logger.info(f"🔄 Demande de comparaison: {request.product_id_1} vs {request.product_id_2}")
+        
+        # Récupérer les deux produits
+        product_1 = await db.get_product_by_id(request.product_id_1)
+        product_2 = await db.get_product_by_id(request.product_id_2)
+        
+        if not product_1:
+            raise HTTPException(status_code=404, detail=f"Produit 1 non trouvé: {request.product_id_1}")
+        
+        if not product_2:
+            raise HTTPException(status_code=404, detail=f"Produit 2 non trouvé: {request.product_id_2}")
+        
+        # Générer la comparaison avec l'IA
+        comparison_data = await advanced_llm_service.compare_products(product_1, product_2)
+        
+        # Créer la réponse structurée
+        response = ComparisonResponse(**comparison_data)
+        
+        logger.info(f"✅ Comparaison générée: Recommandation = {response.final_recommendation}")
+        
+        return response
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Erreur lors de la comparaison: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Erreur interne: {str(e)}")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "app.main:app",
+        "app.main_usershop:app",
         host=settings.HOST,
         port=settings.PORT,
         reload=settings.DEBUG
