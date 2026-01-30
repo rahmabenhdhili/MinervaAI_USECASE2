@@ -370,5 +370,50 @@
         "note": "Commande créée et livrée"
       }
     ]
+  },
+  {
+    "id": "bd1b553f-3c2b-4100-a988-fd9caf4879bf",
+    "order_number": "ORD-00008",
+    "customer": {
+      "name": "jawed mheni",
+      "phone": "+33659845223"
+    },
+    "shipping_address": {
+      "street": "25 rue forst",
+      "city": "paris",
+      "zip_code": "2568",
+      "country": "France"
+    },
+    "items": [
+      {
+        "product_id": "4e4e0a23-20b9-4c47-9996-63214b7d4bf5",
+        "product_name": "3/6/12/24/50 Pack 23.6 Inch Small White Paper Umbrellas Chinese Japanese Parasol Oiled Paper Decorative Umbrellas DIY Painting Parasol for Weddings Bridal Showers Crafts Photography Party Decor",
+        "product_image": "https://m.media-amazon.com/images/I/71mA0hi03OL._AC_UL320_.jpg",
+        "price": 70,
+        "cost": 70,
+        "quantity": 1
+      }
+    ],
+    "pricing": {
+      "subtotal": 70,
+      "shipping": 0,
+      "tax": 0,
+      "total": 70,
+      "cost": 70,
+      "profit": 0
+    },
+    "payment_method": "card",
+    "status": "delivered",
+    "tracking_number": "TRK-00000008",
+    "created_at": "2026-01-30T16:22:25.852985",
+    "updated_at": "2026-01-30T16:22:25.852994",
+    "delivered_at": "2026-01-30T16:22:25.852996",
+    "status_history": [
+      {
+        "status": "delivered",
+        "timestamp": "2026-01-30T16:22:25.852998",
+        "note": "Commande créée et livrée"
+      }
+    ]
   }
 ]
