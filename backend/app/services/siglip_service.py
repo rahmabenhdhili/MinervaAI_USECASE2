@@ -15,14 +15,14 @@ class SigLIPService:
     def __init__(self):
         # Use base model (fine-tuned requires 8GB+ page file - see FIX_MEMORY_ERROR.md)
         self.model_name = "google/siglip-base-patch16-224"
-        print(f"🎯 Loading SigLIP base model from {self.model_name}...")
+        print(f"[LOADING] SigLIP base model from {self.model_name}...")
         self.model = AutoModel.from_pretrained(self.model_name)
         self.processor = AutoProcessor.from_pretrained(self.model_name)
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model.to(self.device)
         self.model.eval()
-        print(f"✓ SigLIP base model loaded on {self.device}")
-        print(f"💡 To use fine-tuned model: Increase Windows page file (see FIX_MEMORY_ERROR.md)")
+        print(f"[OK] SigLIP base model loaded on {self.device}")
+        print(f"[INFO] To use fine-tuned model: Increase Windows page file (see FIX_MEMORY_ERROR.md)")
     
     def embed_image(self, image_bytes: bytes, preprocess: bool = True) -> List[float]:
         """
@@ -55,7 +55,7 @@ class SigLIPService:
             return image_features.cpu().numpy()[0].tolist()
         
         except Exception as e:
-            print(f"❌ Error embedding image: {e}")
+            print(f"[ERROR] Error embedding image: {e}")
             raise
     
     def _preprocess_image(self, image_bytes: bytes) -> Image.Image:
@@ -97,7 +97,7 @@ class SigLIPService:
             return img
             
         except Exception as e:
-            print(f"⚠️ Preprocessing failed, using original image: {e}")
+            print(f"[WARNING] Preprocessing failed, using original image: {e}")
             # Fallback to original
             return Image.open(io.BytesIO(image_bytes)).convert("RGB")
     
@@ -140,7 +140,7 @@ class SigLIPService:
             return text_features.cpu().numpy()[0].tolist()
         
         except Exception as e:
-            print(f"❌ Error embedding text: {e}")
+            print(f"[ERROR] Error embedding text: {e}")
             raise
     
     def get_embedding_dimension(self) -> int:

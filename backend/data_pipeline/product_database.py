@@ -60,7 +60,7 @@ class ProductDatabase:
         """)
         
         self.conn.commit()
-        print(f"✓ Database initialized: {self.db_path}")
+        print(f"[OK] Database initialized: {self.db_path}")
     
     def insert_product(self, product_data: Dict[str, Any]) -> int:
         """
@@ -211,14 +211,14 @@ class ProductDatabase:
         cursor = self.conn.cursor()
         cursor.execute("DELETE FROM products WHERE market = ?", (market,))
         self.conn.commit()
-        print(f"✓ Cleared {cursor.rowcount} products from {market}")
+        print(f"[OK] Cleared {cursor.rowcount} products from {market}")
     
     def clear_all(self):
         """Delete all products from database"""
         cursor = self.conn.cursor()
         cursor.execute("DELETE FROM products")
         self.conn.commit()
-        print(f"✓ Cleared all products from database")
+        print(f"[OK] Cleared all products from database")
     
     def close(self):
         """Close database connection"""

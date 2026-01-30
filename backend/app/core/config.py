@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     HUGGINGFACE_API_KEY: str = ""  # Optional, works without it
     
     # Collections
-    COLLECTION_SUPERMARKET: str = "products_supermarket"
+    COLLECTION_SUPERMARKET: str = "products_supermarket"  # Using existing collection with data
     
     # Embedding (SigLIP for images only)
     CLIP_DIMENSION: int = 768  # SigLIP base produces 768-dimensional embeddings

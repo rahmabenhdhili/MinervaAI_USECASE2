@@ -94,13 +94,10 @@ class DatabaseQueryTool(AgentTool):
                     query_vector=query_vector,
                     max_price=max_price,
                     category=category,
+                    market=market,
                     limit=limit,
                     use_mmr=False
                 )
-                
-                # Filter by market if specified
-                if market:
-                    results = [r for r in results if r["payload"]["market"] == market]
             
             # Strategy 3: Fallback to SQLite
             else:
@@ -240,26 +237,12 @@ class CalculatorTool(AgentTool):
         
         max_affordable = int(budget / price)
         
-        # Smart quantity logic
-        if price < budget * 0.3:  # Less than 30% of budget
-            if max_affordable >= 6:
-                suggested = 6
-                reasoning = "6-pack (bulk savings)"
-            elif max_affordable >= 4:
-                suggested = 4
-                reasoning = "4-pack (family size)"
-            elif max_affordable >= 2:
-                suggested = 2
-                reasoning = "2-pack (stock up)"
-            else:
-                suggested = 1
-                reasoning = "single unit"
-        elif price <= budget:
-            suggested = 1
-            reasoning = "single unit (fits budget)"
+        # Always suggest 1 unit - let user decide quantity
+        suggested = 1
+        if price <= budget:
+            reasoning = "within budget"
         else:
-            suggested = 1
-            reasoning = "over budget - consider alternatives"
+            reasoning = "over budget"
         
         total = price * suggested
         
@@ -273,7 +256,7 @@ class CalculatorTool(AgentTool):
                 "within_budget": total <= budget,
                 "max_affordable": max_affordable
             },
-            reasoning=f"Suggest {suggested} units ({reasoning}) for {total:.2f} TND",
+            reasoning=f"Product is {reasoning}",
             next_steps=["Add to cart" if total <= budget else "Find cheaper alternative"]
         )
     
@@ -396,34 +379,64 @@ class PriceAnalysisTool(AgentTool):
         current_price = product.get("payload", product).get("price", 0)
         
         # Find similar products from other markets that are cheaper
-        alternatives = []
+        current_name = product.get("payload", product).get("name", "").lower()
+        
+        # Split into exact matches and similar products
+        exact_matches = []
+        similar_products = []
+        
         for result in all_results:
             payload = result.get("payload", result)
+            result_name = payload.get("name", "").lower()
+            
             if (payload.get("market") != current_market and
-                payload.get("price", 0) < current_price and
-                result.get("score", 0) > 0.7):  # High similarity
+                payload.get("price", 0) < current_price):
                 
                 savings = current_price - payload["price"]
                 percentage = (savings / current_price) * 100
+                similarity = result.get("score", 0)
                 
-                alternatives.append({
+                alternative = {
                     "product": result,
                     "savings": savings,
                     "percentage": percentage,
-                    "similarity": result.get("score", 0)
-                })
+                    "similarity": similarity
+                }
+                
+                # Check if it's the exact same product (name similarity)
+                # Extract key words from product name (ignore packaging details)
+                current_words = set(w for w in current_name.split() if len(w) > 3)
+                result_words = set(w for w in result_name.split() if len(w) > 3)
+                
+                # Calculate word overlap
+                if current_words and result_words:
+                    overlap = len(current_words & result_words) / len(current_words)
+                    
+                    # If >60% word overlap, consider it the same product
+                    if overlap > 0.6 and similarity > 0.75:
+                        exact_matches.append(alternative)
+                    elif similarity > 0.7:
+                        similar_products.append(alternative)
+                elif similarity > 0.7:
+                    similar_products.append(alternative)
         
-        alternatives.sort(key=lambda x: x["savings"], reverse=True)
+        # Prioritize exact matches, then similar products
+        exact_matches.sort(key=lambda x: x["savings"], reverse=True)
+        similar_products.sort(key=lambda x: x["savings"], reverse=True)
+        
+        # ONLY show exact matches - don't show similar products as alternatives
+        # Similar products are too confusing for users
+        alternatives = exact_matches  # Only exact matches
         
         if alternatives:
-            reasoning = f"Found {len(alternatives)} cheaper alternatives. "
-            reasoning += f"Best saves {alternatives[0]['savings']:.2f} TND ({alternatives[0]['percentage']:.1f}%)"
+            reasoning = f"Found {len(exact_matches)} exact match(es) in other markets"
+            reasoning += f". Best saves {alternatives[0]['savings']:.2f} TND ({alternatives[0]['percentage']:.1f}%)"
         else:
-            reasoning = f"{current_market} has the best price"
+            reasoning = f"{current_market} has the best price (product not found in other markets)"
         
         return ToolResult(
             success=True,
-            data=alternatives[:3],  # Top 3
+            data=alternatives[:3],  # Top 3 exact matches only
             reasoning=reasoning,
             next_steps=["Present alternatives to user"] if alternatives else []
         )
@@ -576,12 +589,51 @@ class AgentOrchestrator:
         self.execution_log.append({"step": 3, "tool": "calculator", "result": quantity_result})
         print(f"   ✓ {quantity_result.reasoning}")
         
-        # Step 5: Find Alternatives
+        # Step 5: Find Alternatives - Search specifically for this product in other markets
         print("🤖 Agent Step 4: Finding cheaper alternatives...")
+        
+        # First, try to find the EXACT same product by name in other markets
+        product_name = best_product.get("name", "")
+        exact_alternatives = []
+        
+        if product_name:
+            # Search by product name text across all markets
+            name_search_result = self.tools["database"].execute(
+                query_vector=None,
+                query_text=product_name,
+                market=None,  # All markets
+                limit=50  # Get more results to find exact matches
+            )
+            
+            if name_search_result.success and name_search_result.data:
+                # Filter for exact/very similar name matches
+                for result in name_search_result.data:
+                    result_payload = result.get("payload", result)
+                    result_name = result_payload.get("name", "")
+                    result_market = result_payload.get("market", "")
+                    
+                    # Skip if same market
+                    if result_market == market:
+                        continue
+                    
+                    # Check name similarity
+                    name_words = set(product_name.lower().split())
+                    result_words = set(result_name.lower().split())
+                    
+                    if name_words and result_words:
+                        overlap = len(name_words & result_words) / len(name_words)
+                        
+                        # If >70% word overlap, it's likely the same product
+                        if overlap > 0.7:
+                            exact_alternatives.append(result)
+        
+        # Use exact alternatives if found, otherwise fall back to vector similarity
+        alternatives_search_results = exact_alternatives if exact_alternatives else all_results
+        
         alternatives_result = self.tools["price_analysis"].execute(
             operation="find_alternatives",
             product=best_match,
-            all_results=all_results,
+            all_results=alternatives_search_results,  # Use exact matches if found
             current_market=market
         )
         self.execution_log.append({"step": 4, "tool": "price_analysis", "result": alternatives_result})
@@ -622,28 +674,33 @@ class AgentOrchestrator:
         
         rec = []
         
-        # Product info
-        if quantity_data:
-            qty = quantity_data["quantity"]
-            total = quantity_data["total_price"]
-            rec.append(f"Get {qty}x {product['name']} for {total:.2f} TND ({quantity_data['reasoning']})")
-        else:
-            rec.append(f"Found: {product['name']} at {product['price']} TND")
+        # Product info - simple format without quantity
+        unit_price = product['price']
+        rec.append(f"{product['name']} at {product['market']} for {unit_price:.2f} TND")
         
-        # Budget status
+        # Budget status with percentage
         if within_budget:
-            rec.append("✓ Within your budget")
+            budget_used_pct = (unit_price / budget) * 100
+            rec.append(f"[OK] Within budget ({budget_used_pct:.0f}% of {budget:.2f} TND)")
         else:
-            over = product['price'] - budget
-            rec.append(f"⚠️ Over budget by {over:.2f} TND")
+            over = unit_price - budget
+            rec.append(f"[WARNING] Over budget by {over:.2f} TND")
         
-        # Alternatives
+        # Cross-market price comparison with detailed evidence
         if alternatives:
             best_alt = alternatives[0]
             alt_product = best_alt["product"].get("payload", best_alt["product"])
-            rec.append(f"💡 Cheaper at {alt_product['market']}: {alt_product['price']} TND (save {best_alt['savings']:.2f} TND)")
+            savings_per_unit = best_alt['savings']
+            
+            rec.append(f"[SAVINGS] Cheaper at {alt_product['market']}: {alt_product['price']:.2f} TND (save {savings_per_unit:.2f} TND, {best_alt['percentage']:.1f}% cheaper)")
+            
+            # Add more alternatives if available
+            if len(alternatives) > 1:
+                other_markets = [f"{alt['product'].get('payload', alt['product'])['market']} ({alt['product'].get('payload', alt['product'])['price']:.2f} TND)" for alt in alternatives[1:3]]
+                rec.append(f"[INFO] Also available at: {', '.join(other_markets)}")
         else:
-            rec.append(f"✓ Best price available")
+            # No alternatives found - this is the best price
+            rec.append(f"[OK] Best price available")
         
         return " | ".join(rec)
 

@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional
 from app.models.schemas import VirtualCart, CartItem, Product
 from app.services.groq_service import groq_service
+from app.services.explainable_ai_service import explainable_ai_service
 import json
 
 class CartService:
@@ -30,11 +31,17 @@ class CartService:
         """Get existing cart"""
         return self.carts.get(session_id)
     
-    def add_item(self, session_id: str, product: Product, quantity: int = 1, market: str = None) -> VirtualCart:
-        """Add item to cart or increase quantity if already exists"""
+    def add_item(self, session_id: str, product: Product, quantity: int = 1, market: str = None) -> Dict:
+        """Add item to cart or increase quantity if already exists
+        
+        Returns cart with budget analysis and explanations
+        """
         cart = self.get_cart(session_id)
         if not cart:
             raise ValueError("Cart not found")
+        
+        # Analyze impact before adding
+        impact_analysis = explainable_ai_service.explain_item_impact(cart, product, quantity)
         
         # Check if item already in cart
         existing_item = next((item for item in cart.items if item.product.id == product.id), None)
@@ -54,7 +61,21 @@ class CartService:
         
         # Recalculate totals with tax
         self._recalculate_cart(cart, market)
-        return cart
+        
+        # Get budget analysis
+        budget_status = explainable_ai_service.analyze_budget_status(cart)
+        
+        return {
+            "cart": cart,
+            "budget_status": budget_status,
+            "item_added": {
+                "name": product.name,
+                "quantity": quantity,
+                "price": product.price,
+                "subtotal": product.price * quantity
+            },
+            "impact_analysis": impact_analysis
+        }
     
     def set_item_quantity(self, session_id: str, product_id: str, quantity: int, market: str = None) -> VirtualCart:
         """Set exact quantity for an item (replaces current quantity)"""
@@ -119,11 +140,8 @@ class CartService:
         """Recalculate cart totals with tax"""
         subtotal = sum(item.subtotal for item in cart.items)
         
-        # Apply tax based on market
-        # Aziza: 100 millimes (0.1 TND) flat fee per shopping session (not per item)
-        tax = 0.0
-        if market and market.lower() == 'aziza' and len(cart.items) > 0:
-            tax = 0.1  # Flat 100 millimes fee for the entire cart
+        # Apply 0.1 TND "Droit de timbre" for all markets when cart has items
+        tax = 0.1 if len(cart.items) > 0 else 0.0
         
         cart.total = subtotal + tax
         cart.remaining = cart.budget - cart.total
@@ -140,92 +158,56 @@ class CartService:
         if not cart.is_over_budget:
             return []
         
-        # Prepare cart summary for Groq
-        cart_summary = {
-            "total": cart.total,
-            "budget": cart.budget,
-            "overspend": cart.overspend_amount,
-            "items": [
-                {
-                    "name": item.product.name,
-                    "price": item.product.price,
-                    "quantity": item.quantity,
-                    "subtotal": item.subtotal,
-                    "market": item.product.market
-                }
-                for item in cart.items
-            ]
+        # Use explainable AI service for better suggestions
+        return await explainable_ai_service.get_smart_alternatives(cart, all_products)
+    
+    def get_cart_analysis(self, session_id: str) -> Dict:
+        """
+        Get comprehensive cart analysis with explainable AI insights
+        """
+        cart = self.get_cart(session_id)
+        if not cart:
+            raise ValueError("Cart not found")
+        
+        # Get budget status
+        budget_status = explainable_ai_service.analyze_budget_status(cart)
+        
+        # Get shopping summary
+        shopping_summary = explainable_ai_service.generate_shopping_summary(cart)
+        
+        return {
+            "cart": cart,
+            "budget_status": budget_status,
+            "shopping_summary": shopping_summary
         }
+    
+    async def get_optimization_suggestions(
+        self, 
+        session_id: str, 
+        all_products: List[Product]
+    ) -> Dict:
+        """
+        Get AI-powered optimization suggestions with explanations
+        """
+        cart = self.get_cart(session_id)
+        if not cart:
+            raise ValueError("Cart not found")
         
-        # Get available alternatives
-        alternatives_summary = [
-            {
-                "name": p.name,
-                "price": p.price,
-                "market": p.market,
-                "category": p.category
-            }
-            for p in all_products[:20]  # Limit for Groq
-        ]
+        # Get budget analysis
+        budget_status = explainable_ai_service.analyze_budget_status(cart)
         
-        prompt = f"""You are a budget-aware shopping assistant. The user's cart is over budget.
-
-Cart Summary:
-{json.dumps(cart_summary, indent=2)}
-
-Available Alternatives:
-{json.dumps(alternatives_summary, indent=2)}
-
-Task: Provide 3 actionable suggestions to bring the cart within budget:
-1. Remove the most expensive non-essential item
-2. Replace an item with a cheaper alternative
-3. Find the same product in a cheaper market
-
-Return ONLY valid JSON array:
-[
-  {{
-    "action": "remove" | "replace" | "switch_market",
-    "item_name": "...",
-    "reason": "...",
-    "savings": 0.0,
-    "alternative": "..." (if replace/switch)
-  }}
-]
-"""
-
-        try:
-            from openai import OpenAI
-            from app.core.config import settings
-            
-            client = OpenAI(
-                api_key=settings.GROQ_API_KEY,
-                base_url=settings.GROQ_BASE_URL
-            )
-            
-            response = client.chat.completions.create(
-                model=settings.GROQ_MODEL,
-                messages=[
-                    {"role": "system", "content": "You are a budget optimization assistant. Return only valid JSON."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.3,
-                max_tokens=1000
-            )
-            
-            suggestions_text = response.choices[0].message.content.strip()
-            
-            # Extract JSON
-            if "```json" in suggestions_text:
-                suggestions_text = suggestions_text.split("```json")[1].split("```")[0].strip()
-            elif "```" in suggestions_text:
-                suggestions_text = suggestions_text.split("```")[1].split("```")[0].strip()
-            
-            suggestions = json.loads(suggestions_text)
-            return suggestions
+        # Get smart alternatives
+        alternatives = await explainable_ai_service.get_smart_alternatives(
+            cart, 
+            all_products,
+            target_savings=cart.overspend_amount if cart.is_over_budget else None
+        )
         
-        except Exception as e:
-            print(f"Error getting suggestions: {e}")
-            return []
+        return {
+            "budget_status": budget_status,
+            "alternatives": alternatives,
+            "needs_optimization": cart.is_over_budget or budget_status["percentage_used"] >= 85
+        }
 
 # Singleton instance
 cart_service = CartService()
