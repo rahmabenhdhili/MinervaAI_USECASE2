@@ -175,23 +175,62 @@ class QdrantService:
         if conditions:
             query_filter = Filter(must=conditions)
         
-        # Use search API (query API signature changed in newer versions)
-        results = self.client.search(
-            collection_name=collection_name,
-            query_vector=query_vector,
-            query_filter=query_filter,
-            limit=limit * 2,  # Get more results for Groq to analyze
-            score_threshold=0.3  # Minimum similarity threshold
-        )
+        # Use query API (updated for newer Qdrant versions)
+        try:
+            results = self.client.query_points(
+                collection_name=collection_name,
+                query=query_vector,
+                query_filter=query_filter,
+                limit=limit * 2,  # Get more results for analysis
+                score_threshold=0.3  # Minimum similarity threshold
+            )
+        except AttributeError:
+            # Fallback to older API
+            results = self.client.search(
+                collection_name=collection_name,
+                query_vector=query_vector,
+                query_filter=query_filter,
+                limit=limit * 2,
+                score_threshold=0.3
+            )
         
-        # Parse search results
+        # Parse search results (handle different response formats)
         formatted_results = []
-        for hit in results:
-            formatted_results.append({
-                "id": hit.id,
-                "score": hit.score,
-                "payload": hit.payload
-            })
+        
+        # Handle both old and new API response formats
+        if hasattr(results, 'points'):
+            # New API format
+            points = results.points
+        elif isinstance(results, (list, tuple)):
+            # Results is directly a list/tuple of points
+            points = results
+        else:
+            # Fallback
+            points = results
+        
+        for hit in points:
+            # Handle different hit formats
+            if hasattr(hit, 'id') and hasattr(hit, 'score') and hasattr(hit, 'payload'):
+                # Standard format
+                formatted_results.append({
+                    "id": hit.id,
+                    "score": hit.score,
+                    "payload": hit.payload
+                })
+            elif isinstance(hit, tuple) and len(hit) >= 3:
+                # Tuple format: (id, score, payload)
+                formatted_results.append({
+                    "id": hit[0],
+                    "score": hit[1],
+                    "payload": hit[2]
+                })
+            elif hasattr(hit, '__dict__'):
+                # Object with attributes
+                formatted_results.append({
+                    "id": getattr(hit, 'id', None),
+                    "score": getattr(hit, 'score', 0.0),
+                    "payload": getattr(hit, 'payload', {})
+                })
         
         return formatted_results
     

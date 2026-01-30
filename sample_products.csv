@@ -1,0 +1,6 @@
+url,name,category,brand,img,description,price
+https://example.com/product1,Smartphone Samsung Galaxy S24,Electronics,Samsung,https://example.com/img1.jpg,Smartphone haut de gamme avec écran AMOLED et caméra 108MP,899.99
+https://example.com/product2,MacBook Air M2,Electronics,Apple,https://example.com/img2.jpg,Ordinateur portable ultra-léger avec puce M2 et écran Retina,1299.00
+https://example.com/product3,Nike Air Max 270,Shoes,Nike,https://example.com/img3.jpg,Chaussures de sport confortables avec technologie Air Max,129.99
+https://example.com/product4,Café Arabica Premium,Food,Local Roaster,https://example.com/img4.jpg,Café arabica torréfié artisanalement avec notes fruitées,24.50
+https://example.com/product5,Casque Sony WH-1000XM5,Electronics,Sony,https://example.com/img5.jpg,Casque sans fil avec réduction de bruit active,349.99

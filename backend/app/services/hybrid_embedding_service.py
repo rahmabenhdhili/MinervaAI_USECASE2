@@ -6,7 +6,7 @@ This service creates embeddings using:
 2. OCR text extraction for keywords (brand, product type)
 """
 from typing import Dict, Any, Optional, List
-from app.services.siglip_service import siglip_service
+from app.services.siglip_service import get_siglip_service
 from app.services.ocr_service import get_ocr_service
 import numpy as np
 
@@ -18,6 +18,13 @@ class HybridEmbeddingService:
     
     def __init__(self):
         self.use_ocr = True  # Enable OCR by default
+        self._siglip_service = None
+    
+    def _get_siglip(self):
+        """Lazy load SigLIP service"""
+        if self._siglip_service is None:
+            self._siglip_service = get_siglip_service()
+        return self._siglip_service
     
     def create_query_embedding(
         self,
@@ -42,7 +49,8 @@ class HybridEmbeddingService:
             - detected_category: Detected category from keywords
         """
         # Generate visual embedding (SigLIP)
-        visual_embedding = siglip_service.embed_image(image_bytes, preprocess=True)
+        siglip = self._get_siglip()
+        visual_embedding = siglip.embed_image(image_bytes, preprocess=True)
         
         # Extract text using OCR
         extracted_text = ""
@@ -124,7 +132,8 @@ class HybridEmbeddingService:
             Visual embedding vector
         """
         if image_bytes:
-            return siglip_service.embed_image(image_bytes, preprocess=True)
+            siglip = self._get_siglip()
+            return siglip.embed_image(image_bytes, preprocess=True)
         else:
             # Return zero vector if no image
             return [0.0] * 768

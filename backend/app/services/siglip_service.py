@@ -1,4 +1,4 @@
-from transformers import AutoProcessor, AutoModel
+from transformers import AutoModel, AutoImageProcessor
 from PIL import Image, ImageEnhance, ImageOps
 import torch
 from typing import List
@@ -16,8 +16,16 @@ class SigLIPService:
         # Use base model (fine-tuned requires 8GB+ page file - see FIX_MEMORY_ERROR.md)
         self.model_name = "google/siglip-base-patch16-224"
         print(f"[LOADING] SigLIP base model from {self.model_name}...")
-        self.model = AutoModel.from_pretrained(self.model_name)
-        self.processor = AutoProcessor.from_pretrained(self.model_name)
+        
+        # Load model and image processor (SigLIP is vision-only, no tokenizer needed)
+        try:
+            self.model = AutoModel.from_pretrained(self.model_name)
+            self.image_processor = AutoImageProcessor.from_pretrained(self.model_name)
+            print("[OK] SigLIP model and processor loaded successfully")
+        except Exception as e:
+            print(f"[ERROR] Failed to load SigLIP: {e}")
+            raise
+        
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model.to(self.device)
         self.model.eval()
@@ -42,15 +50,29 @@ class SigLIPService:
             else:
                 image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
             
-            # Process image for SigLIP
-            inputs = self.processor(images=image, return_tensors="pt")
+            # Process image for SigLIP using image processor
+            inputs = self.image_processor(images=image, return_tensors="pt")
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
             
             # Generate embedding
             with torch.no_grad():
                 outputs = self.model.get_image_features(**inputs)
+                
+                # For SigLIP, the output should be a tensor directly
+                # If it's a model output object, get the pooler_output or last_hidden_state
+                if hasattr(outputs, 'pooler_output') and outputs.pooler_output is not None:
+                    image_features = outputs.pooler_output
+                elif hasattr(outputs, 'last_hidden_state'):
+                    # Take the mean of the last hidden state (global average pooling)
+                    image_features = outputs.last_hidden_state.mean(dim=1)
+                elif torch.is_tensor(outputs):
+                    image_features = outputs
+                else:
+                    # Fallback - try to access the tensor
+                    image_features = outputs[0] if hasattr(outputs, '__getitem__') else outputs
+                
                 # Normalize for cosine similarity
-                image_features = outputs / outputs.norm(dim=-1, keepdim=True)
+                image_features = image_features / image_features.norm(dim=-1, keepdim=True)
             
             return image_features.cpu().numpy()[0].tolist()
         
@@ -129,7 +151,7 @@ class SigLIPService:
     def embed_text(self, text: str) -> List[float]:
         """Generate embedding for text (for cross-modal search)"""
         try:
-            inputs = self.processor(text=[text], return_tensors="pt", padding=True)
+            inputs = self.tokenizer(text=[text], return_tensors="pt", padding=True)
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
             
             with torch.no_grad():
@@ -147,5 +169,12 @@ class SigLIPService:
         """Get the dimension of SigLIP embeddings"""
         return 768  # SigLIP base produces 768-dimensional embeddings
 
-# Singleton instance
-siglip_service = SigLIPService()
+# Singleton instance - lazy initialization
+siglip_service = None
+
+def get_siglip_service():
+    """Get or create SigLIP service instance"""
+    global siglip_service
+    if siglip_service is None:
+        siglip_service = SigLIPService()
+    return siglip_service

@@ -19,10 +19,18 @@ class CdiscountService:
         settings = get_settings()
         # 🔐 CLÉ API FIRECRAWL - Utiliser la clé dédiée Cdiscount, sinon la clé par défaut
         api_key = settings.firecrawl_api_key_cdiscount or settings.firecrawl_api_key
-        self.app = FirecrawlApp(api_key=api_key)
+        
+        # Initialize Firecrawl only if API key is provided
+        if api_key:
+            self.app = FirecrawlApp(api_key=api_key)
+        else:
+            self.app = None
+            if debug:
+                print(f"⚠️ Cdiscount Service: No Firecrawl API key - service disabled")
+        
         self.debug = debug
         
-        if debug:
+        if debug and self.app:
             print(f"✅ Cdiscount Service initialisé")
             key_type = "clé dédiée Cdiscount" if settings.firecrawl_api_key_cdiscount else "clé par défaut"
             print(f"   🔥 Firecrawl: ✅ Configuré ({key_type})")
