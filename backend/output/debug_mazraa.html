@@ -1,0 +1,947 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head id="j_idt2"><link type="text/css" rel="stylesheet" href="/faces/javax.faces.resource/components.css?ln=primefaces&amp;v=6.1"><script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-31QQFLQHCK&amp;cx=c&amp;gtm=4e61r1"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=UA-186795023-1&amp;cx=c&amp;gtm=4e61r1"></script><script type="text/javascript" src="/faces/javax.faces.resource/jquery/jquery.js?ln=primefaces&amp;v=6.1"></script><script type="text/javascript" src="/faces/javax.faces.resource/jquery/jquery-plugins.js?ln=primefaces&amp;v=6.1"></script><script type="text/javascript" src="/faces/javax.faces.resource/core.js?ln=primefaces&amp;v=6.1"></script><script type="text/javascript" src="/faces/javax.faces.resource/components.js?ln=primefaces&amp;v=6.1"></script><script type="text/javascript" src="/faces/javax.faces.resource/jsf.js?ln=javax.faces&amp;stage=Development"></script><script type="text/javascript">if(window.PrimeFaces){PrimeFaces.settings.locale='fr_FR';PrimeFaces.settings.projectStage='Development';}</script>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <!-- Meta, title, CSS, favicons, etc. -->
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+            <title> MAZRAA Market  | Vente en ligne</title>
+            <link rel="shortcut icon" href="../resources/images/Logo-Mazraa-Market5.png">
+            <!-- Bootstrap -->
+            <link type="text/css" rel="stylesheet" href="../resources/css/bootstrap.min.css">
+            <!-- Slick -->
+            <link type="text/css" rel="stylesheet" href="../resources/css/slick.css">
+            <link type="text/css" rel="stylesheet" href="../resources/css/slick-theme.css">
+            <!-- nouislider -->
+            <link type="text/css" rel="stylesheet" href="../resources/css/nouislider.min.css">
+            <!-- Font Awesome Icon -->
+            <link rel="stylesheet" href="../resources/css/font-awesome.min.css">
+            <!-- Custom stlylesheet -->
+            <link type="text/css" rel="stylesheet" href="../resources/css/style.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+            <script language="javascript" type="text/javascript">
+                PrimeFaces.locales ['fr_FR'] = {
+                    closeText: 'Valider',
+                    prevText: 'Précédent',
+                    nextText: 'Suivant',
+                    monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                    dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+                    dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                    weekHeader: 'Semaine',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    timeOnlyTitle: 'Choisir l\'heure',
+                    timeText: 'Heure',
+                    hourText: 'Heures',
+                    minuteText: 'Minutes',
+                    secondText: 'Secondes',
+                    currentText: 'Maintenant',
+                    ampm: false,
+                    month: 'Mois',
+                    week: 'Semaine',
+                    day: 'Jour',
+                    allDayText: 'Toute la journée'
+                };
+            </script>
+
+
+
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-G3E9J0VGF4"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+                gtag('js', new Date());
+
+                gtag('config', 'G-G3E9J0VGF4');
+            </script></head><body><div id="j_idt4" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-draggable ui-resizable" style="background-color: rgba(255, 255, 255, 0.6); border: 0px; width: auto; height: auto;" role="dialog" aria-labelledby="j_idt4_title" aria-hidden="true"><div class="ui-dialog-content ui-widget-content" style="height: auto;">                
+                <img src="../resources/images/loadingn.gif" width="140px" height="140px" align="center"></div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div></div>
+
+            <!-- HEADER -->
+            <header>
+                <!-- TOP HEADER -->
+<form id="formTopHeader" name="formTopHeader" method="post" action="/faces/storeParCategorie.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="formTopHeader" value="formTopHeader">
+
+                    <div id="top-header">
+                        <div class="container">
+                            <ul class="header-links pull-left">
+                                                                                               <li><a href="http://mazraamarket.tn/faces/accueil.xhtml">Accueil</a></li>
+                                                                                                <li><a href="http://mazraamarket.tn/faces/presentation.xhtml">À propos</a></li>
+                                                                                                <li><a href="http://mazraamarket.tn/faces/actualite.xhtml">Actualités</a></li>
+                                                                                                <li><a href="http://mazraamarket.tn/faces/recettes.xhtml">Recettes</a></li>
+                                                                                                <li><a href="http://mazraamarket.tn/faces/contact.xhtml">Contactez-nous</a></li>
+<!--
+                                 &lt;li&gt;&lt;a href="http://localhost:8080/sse/faces/accueil.xhtml"&gt;{bundle.Accueil}&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href="http://localhost:8080/sse/faces/presentation.xhtml"&gt;{bundle.APropos}&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href="http://localhost:8080/sse/faces/actualite.xhtml"&gt;{bundle.News}&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href="http://localhost:8080/sse/faces/recettes.xhtml"&gt;{bundle.Recette}&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href="http://localhost:8080/sse/faces/contact.xhtml"&gt;{bundle.Contactez}&lt;/a&gt;&lt;/li&gt;
+-->
+
+                                <!--
+                                                                                               &lt;li&gt;&lt;a href="http://mazraamarket.tn/sseTest/faces/accueil.xhtml"&gt;{bundle.Accueil}&lt;/a&gt;&lt;/li&gt;
+                                                                                                &lt;li&gt;&lt;a href="http://mazraamarket.tn/sseTest/faces/presentation.xhtml"&gt;{bundle.APropos}&lt;/a&gt;&lt;/li&gt;
+                                                                                                &lt;li&gt;&lt;a href="http://mazraamarket.tn/sseTest/faces/actualite.xhtml"&gt;{bundle.News}&lt;/a&gt;&lt;/li&gt;
+                                                                                                &lt;li&gt;&lt;a href="http://mazraamarket.tn/sseTest/faces/recettes.xhtml"&gt;{bundle.Recette}&lt;/a&gt;&lt;/li&gt;
+                                                                                                &lt;li&gt;&lt;a href="http://mazraamarket.tn/sseTest/faces/contact.xhtml"&gt;{bundle.Contactez}&lt;/a&gt;&lt;/li&gt;
+
+                                --> 
+
+                            </ul>
+                            <ul class="header-links pull-right">
+
+                                <li>
+                                </li>  
+
+
+                                <li><a href="#"><i></i> <strong class="text-uppercase"><span id="formTopHeader:idTotalTTC"> TND</span> </strong> </a></li>
+
+
+                                <li><a href="http://mazraamarket.tn/faces/compte.xhtml" style=" font-size: 14px;"> <i class="fa fa-user-o" aria-hidden="true"></i>Mon compte  </a><table id="formTopHeader:j_idt13" class="ui-panelgrid ui-widget" role="grid"><tbody>
+                                        
+<!--                                        &lt;a href="http://localhost:8080/sse/faces/compte.xhtml"   style=" font-size: 14px;" &gt; &lt;i class="fa fa-user-o" aria-hidden="true" &gt;&lt;/i&gt;{bundle.MyAcount}  &lt;/a&gt;-->
+<!--                                        &lt;a href="http://mazraamarket.tn/sseTest/faces/compte.xhtml"   style=" font-size: 14px;" &gt; &lt;i class="fa fa-user-o" aria-hidden="true" &gt;&lt;/i&gt; {bundle.MyAcount}  &lt;/a&gt;--></tbody></table>
+                                </li>
+
+
+
+                                <li>
+                                </li>  
+
+                            </ul>
+                        </div>
+                    </div><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="7714847969366038837:8897703464340799148" autocomplete="off">
+</form>  
+
+                <!-- /TOP HEADER -->
+
+                <!-- MAIN HEADER -->
+                <div id="header">
+                    <!-- container -->
+                    <div class="container">
+                        <!-- row -->
+                        <div class="row">
+                            <!-- LOGO -->
+                            <div class="col-md-3">
+                                <div class="header-logo">
+                                    <a href="http://mazraamarket.tn/faces/accueil.xhtml" class="logo">
+<!--                                    &lt;a href="http://localhost:8080/sse/faces/accueil.xhtml" class="logo"&gt;-->
+<!--                                        &lt;a href="http://mazraamarket.tn/sseTest/faces/accueil.xhtml" class="logo"&gt;-->
+                                        <img src="../resources/images/Mazraa_Market_FR.png" style="height: 95px;  " alt="" width="1509" height="926">
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- /LOGO -->
+
+                            <!-- SEARCH BAR -->
+
+                            <div class="col-md-6 " style="text-align: center">
+                                <div class="header-search" style="text-align: center">
+<form id="j_idt20" name="j_idt20" method="post" action="/faces/storeParCategorie.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt20" value="j_idt20">
+<input id="j_idt20:j_idt21" name="j_idt20:j_idt21" type="search" value="" autocomplete="true" placeholder="  Produit ..." onchange="PrimeFaces.ab({s:&quot;j_idt20:j_idt21&quot;,e:&quot;valueChange&quot;,p:&quot;j_idt20:j_idt21&quot;});" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all input-select" role="textbox" aria-disabled="false" aria-readonly="false"><button id="j_idt20:j_idt22" name="j_idt20:j_idt22" class=" search-btn" onclick="PrimeFaces.onPost();" title="Rechercher" type="push" role="button" aria-disabled="false"><span class="ui-button-text ui-c">Rechercher</span></button><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:1" value="7714847969366038837:8897703464340799148" autocomplete="off">
+</form>
+                                </div>
+
+                            </div>
+
+                            <!-- /SEARCH BAR -->
+
+                            <!-- ACCOUNT -->
+                            <div class="col-md-3 clearfix">
+                                <div class="header-ctn" style="float: right">
+                                    <!-- Wishlist -->
+                                    <div>
+
+                                    </div>
+
+                                    <div>
+                                        <a href="http://mazraamarket.tn/faces/maCommande.xhtml">
+<!--                                        &lt;a href="http://localhost:8080/sse/faces/maCommande.xhtml"&gt;                                        -->
+<!--                                            &lt;a href="http://mazraamarket.tn/sseTest/faces/maCommande.xhtml"&gt;-->
+
+                                            <i class="fa fa-shopping-cart"></i>
+                                            <span>Panier</span>
+                                            <div class="qty"><label id="notification" class="ui-outputlabel ui-widget">0</label>
+
+                                            </div>
+                                        </a>
+                                    </div>
+
+
+                                    <!-- Menu Toogle -->
+                                    <div class="menu-toggle">
+                                        <a href="#">
+                                            <i class="fa fa-bars"></i>
+                                            <span>Menu</span>
+                                        </a>
+                                    </div>
+                                    <!-- /Menu Toogle -->
+                                </div>
+                            </div>
+                            <!-- /ACCOUNT -->
+                        </div>
+                        <!-- row -->
+                    </div>
+                    <!-- container -->
+                </div>
+                <!-- /MAIN HEADER -->
+            </header>
+            <!-- /HEADER -->
+<form id="j_idt25" name="j_idt25" method="post" action="/faces/storeParCategorie.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt25" value="j_idt25">
+
+
+
+
+                <nav id="navigation">
+                    <!-- container -->
+                    <div class="container">
+                        <!-- responsive-nav -->
+                        <div id="responsive-nav">
+                            <!-- NAV -->
+                            <ul class="main-nav nav navbar-nav">
+                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt27':'j_idt25:j_idt27'},'');return false"> 
+                                        ACCUEIL 
+                                    </a>
+                                </li>
+
+                                <li style="font-size: 12px; "><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt30':'j_idt25:j_idt30'},'');return false"> 
+                                        PROMOTIONS 
+                                    </a>
+                                </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:0:j_idt35':'j_idt25:j_idt33:0:j_idt35'},'');return false"> 
+                                            LE MARCHÉ  
+                                            </a>
+                                    </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:1:j_idt35':'j_idt25:j_idt33:1:j_idt35'},'');return false"> 
+                                            MAZRAA  
+                                            </a>
+                                    </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:2:j_idt35':'j_idt25:j_idt33:2:j_idt35'},'');return false"> 
+                                            PRÊT À MANGER  
+                                            </a>
+                                    </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:3:j_idt35':'j_idt25:j_idt33:3:j_idt35'},'');return false"> 
+                                            ALIMENTATION  
+                                            </a>
+                                    </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:4:j_idt35':'j_idt25:j_idt33:4:j_idt35'},'');return false"> 
+                                            MAISON &amp; HYGIÈNE  
+                                            </a>
+                                    </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:5:j_idt35':'j_idt25:j_idt33:5:j_idt35'},'');return false"> 
+                                            PET FOOD  
+                                            </a>
+                                    </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:6:j_idt35':'j_idt25:j_idt33:6:j_idt35'},'');return false"> 
+                                            BAZAAR  
+                                            </a>
+                                    </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:7:j_idt35':'j_idt25:j_idt33:7:j_idt35'},'');return false"> 
+                                            NOUVAUTÉ  
+                                            </a>
+                                    </li>
+                                    <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt25'),{'j_idt25:j_idt33:8:j_idt35':'j_idt25:j_idt33:8:j_idt35'},'');return false"> 
+                                            EPICERIE  
+                                            </a>
+                                    </li>
+                            </ul>
+                            <!-- /NAV -->
+                        </div>
+                        <!-- /responsive-nav -->
+                    </div>
+                    <!-- /container -->
+                </nav><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:2" value="7714847969366038837:8897703464340799148" autocomplete="off">
+</form>
+
+            <div class="right_col" role="main"><span id="growl"></span>
+<form id="j_idt40" name="j_idt40" method="post" action="/faces/storeParCategorie.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt40" value="j_idt40">
+
+                <div id="breadcrumb" class="section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="breadcrumb-tree">                                    
+                                    <li>Catalogue</li>
+                                    <li class="active">  </li>
+                                    <li class="active">  Résultat(s)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <!-- SECTION -->
+                <div class="section">
+                    <!-- container -->
+                    <div class="container">
+                        <!-- row -->
+                        <div class="row col-md-12">
+
+                            <div class="col-md-3">
+                                <div class="categories-menu mrg-xs" style="width: 90%">
+                                    <div class="category-heading">
+                                        <h3> Categories</h3>
+                                    </div>
+                                    <div class="category-menu-list">
+                                        <ul>                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <!-- STORE -->
+                            <div id="store" class="col-md-9">
+
+                            </div>
+                            <!-- /STORE -->
+                        </div>
+                        <!-- /row -->
+                    </div>
+                    <!-- /container -->
+                </div>
+                <!-- /SECTION --><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:3" value="7714847969366038837:8897703464340799148" autocomplete="off">
+</form>
+
+
+
+            <style>
+
+
+                .ui-datagrid .ui-paginator {
+                    /* text-align: center; */
+
+                    margin-bottom: 15px;
+                    margin-top: 15px;
+
+                }
+
+                .ui-paginator-current{
+                    margin-right: 30px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    font-size: 14px;
+                    float: left;
+                }
+
+                .ui-paginator-pages{
+
+                    float: right;
+                }
+
+
+                .ui-paginator-pages a{
+                    display: inline-block;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                    background-color: #FFF;
+                    border: 1px solid #E4E7ED;
+                    -webkit-transition: 0.2s all;
+                    transition: 0.2s all;
+                }
+
+                .ui-paginator-pages a.ui-state-active{
+                    background-color: #F19106;
+                    border-color: #F19106;
+                    color: #FFF;
+                    font-weight: 500;
+                    cursor: default;
+                }
+
+                hr.style2 {
+                    border-top: 3px double #006d34;
+                    color: #006d34;
+                    background-color: #006d34;
+                }
+
+                .section-preview {
+                    border: 1px solid #e0e0e0;
+                    padding: 15px;
+                }
+
+                hr.style2 {
+                    border-top: 3px double #006d34;
+                }
+
+
+
+
+                .float-right-style {
+                    float: left;
+                }
+
+                .htc__shop__left__sidebar.mrg-xs {
+                    margin-top: 50px;
+                }
+
+                .mrg-xs {
+                    margin-top: 50px;
+                }
+
+                .category-heading > h3::before {
+                    left: 12px;
+                }
+                .category-heading > h3 {
+                    font-size: 14px;
+                    padding: 15px 10px 15px 35px;
+                }
+
+                .category-heading > h3 {
+                    background: #303030 none repeat scroll 0 0;
+                    color: #fff;
+                    font-size: 16px;
+                    font-weight: normal;
+                    letter-spacing: 1px;
+                    padding: 15px 15px 15px 50px;
+                    position: relative;
+                    text-transform: uppercase;
+                    transition: all .3s ease 0s;
+                }
+                .category-heading > h3 a {
+                    color: #fff;
+                }
+                .category-heading > h3:hover {
+                    color: #F19106;
+                }
+                .category-heading > h3::before {
+                    content: "";
+                    font-family: "Material-Design-Iconic-Font";
+                    font-size: 20px;
+                    font-weight: normal;
+                    left: 20px;
+                    margin-right: 12px;
+                    position: absolute;
+                    top: 12px;
+                }
+
+                .category-heading > h3::before {
+                    left: 12px;
+                }
+                .category-heading > h3 {
+                    font-size: 14px;
+                    padding: 15px 10px 15px 35px;
+                }
+
+                .category-menu-list ul li a {
+                    font-size: 14px;
+                    padding: 10px;
+                }
+
+                .category-menu-list ul li .category-menu-dropdown {
+                    padding: 52px 10px;
+                    width: 500px;
+                }
+                .category-menu-list ul li .category-common2 {
+                    padding-right: 20px;
+                }
+
+                .category-menu-list {
+                    background: #ffffff none repeat scroll 0 0;
+                    border: 1px solid rgba(129, 129, 129, 0.2);
+                    width: 100%;
+                    z-index: 99;
+                }
+                .category-menu-list > ul {} .category-menu-list ul li {
+                    border-bottom: 1px solid #eee;
+                    position: relative;
+                }
+                .category-menu-list ul li:last-child {
+                    border-bottom: none;
+                }
+                .category-menu-list ul li a {
+                    color: #333;
+                    display: block;
+                    font-size: 12px;
+                    letter-spacing: 0.4px;
+                    padding: 10px 20px;
+                    text-transform: capitalize;
+                    background-color: #fff;
+                    transition: all .3s ease 0s;
+                }
+                .category-menu-list ul li a span img {
+                    margin-right: 5px;
+                    width: 15px;
+                }
+                .category-menu-list ul li:hover a {
+                    color: #F19106;
+                    background-color: #f9f9f9;
+                }
+                .category-menu-list ul li .category-menu-dropdown {
+                    background: #fff none repeat scroll 0 0;
+                    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
+                    left: 110%;
+                    opacity: 0;
+                    visibility: hidden;
+                    padding: 52px 30px;
+                    position: absolute;
+                    text-align: left;
+                    top: 0;
+                    transition: all 0.3s ease 0s;
+                    width: 800px;
+                    z-index: 999999999;
+                }
+                .category-menu-list ul li:hover .category-menu-dropdown {
+                    opacity: 1;
+                    left: 100%;
+                    visibility: visible;
+                }
+                .category-menu-list ul li .category-common {
+                    float: left;
+                    padding-right: 27px;
+                    width: 50%;
+                }
+                .category-menu-list ul li .category-common2 {
+                    float: left;
+                    padding-right: 27px;
+                    width: 33.333%;
+                }
+                .category-menu-list ul li .category-common h4,
+                .category-menu-list ul li .category-common2 h4 {
+                    font-size: 14px;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    margin-bottom: 15px;
+                }
+                .category-menu-list ul li .category-common ul li,
+                .category-menu-list ul li .category-common2 ul li {
+                    border: medium none;
+                }
+                .category-menu-list ul li .category-common ul li a,
+                .category-menu-list ul li .category-common2 ul li a {
+                    padding: 3px 0;
+                    color: #333;
+                    background-color: transparent;
+                }
+                .category-menu-list ul li .category-common ul li a:hover,
+                .category-menu-list ul li .category-common2 ul li a:hover {
+                    background-color: transparent;
+                    color: #F19106;
+                }
+                .category-menu-list ul li .mega-banner-img a {
+                    padding: 0;
+                    background-color: transparent;
+                }
+                .category-menu-list ul li .mega-banner-img a,
+                .category-menu-list ul li .category-menu-dropdown-right .menu-right-img a {
+                    padding: 0;
+                    background-color: transparent;
+                }
+                .category-menu-list ul li a i {
+                    float: right;
+                    font-size: 14px;
+                    margin-top: 5px;
+                }
+
+
+
+                .form-control
+                {
+
+                    width:80px;
+                }
+
+
+                .ui-editor-toolbar
+                {
+
+                    display: none;
+                }
+
+                .ql-container.ql-snow {
+                    border: none;
+                }
+                .ui-grid td {
+                    white-space: nowrap;
+                }
+
+                .ui-spinner-input{
+                    max-width: 120px;
+                    height:35px;
+                    font-size: 14px;
+                    line-height: 1.42857143;
+                    color: #555;
+                    background-color: #fff;
+                    background-image: none;
+                    border: 1px solid rgba(129, 129, 129, 0.2);                    
+                    text-align: center;
+                }
+                body .ui-spinner .ui-spinner-button.ui-button{background-color:transparent;color: #F19106; border-left: 1px solid rgba(129, 129, 129, 0.2);width:3em;}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-state-hover{background-color:#eaeaea;color:#333;border:0 none}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-state-active{background-color:#F19106;color:#fff;border:0 none}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-state-focus{background-color:#eaeaea;color:#333;border:0 none}
+                body .ui-spinner .ui-spinner-button.ui-button .ui-icon{position:absolute;top:50%;left:50%}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up{margin-top:1px;margin-right:1px;  border-bottom: 1px solid rgba(129, 129, 129, 0.2)}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up .ui-icon{margin-top:-0.5em;margin-left:-0.25em;font-family:'primeicons';speak:none;font-weight:150;font-variant:normal;text-transform:none;line-height:1;display:inline-block;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-indent:0 !important;text-align:center;background:0;display:inline-block;font-size:2.2em}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-up .ui-icon:before{content:"+"}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down{margin-bottom:1px;margin-right:1px}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down .ui-icon{margin-top:-0.5em;margin-left:-0.25em;font-family:'primeicons';speak:none;font-weight:150;font-variant:normal;text-transform:none;line-height:1;display:inline-block;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-indent:0 !important;text-align:center;background:0;display:inline-block;font-size:2.2em}
+                body .ui-spinner .ui-spinner-button.ui-button.ui-spinner-down .ui-icon:before{content:"-"}
+
+                .ui-spinner-button{-moz-border-radius-topright:0px;-webkit-border-top-right-radius:0px;border-top-right-radius:0px;-moz-border-radius-bottomright:0px;-webkit-border-bottom-right-radius:0px;border-bottom-right-radius:0px}
+
+
+
+            </style>
+
+            </div>
+
+
+            <div id="newsletter" class="section">
+                <!-- container -->
+                <div class="container">
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="newsletter">
+                                <p>Inscrivez-vous à nos  <strong>Newsletters</strong></p>
+<form id="j_idt84" name="j_idt84" method="post" action="/faces/storeParCategorie.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt84" value="j_idt84">
+<input id="j_idt84:j_idt85" name="j_idt84:j_idt85" type="text" value="" placeholder="Entrez votre adresse email" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all input" role="textbox" aria-disabled="false" aria-readonly="false"><button id="j_idt84:j_idt86" name="j_idt84:j_idt86" class=" newsletter-btn" onclick="PrimeFaces.onPost();" title="S'abonner" type="push" role="button" aria-disabled="false"><span class="ui-button-text ui-c">S'abonner</span></button><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:4" value="7714847969366038837:8897703464340799148" autocomplete="off">
+</form>
+                                <ul class="newsletter-follow">
+                                    <li>
+                                        <a href="https://www.facebook.com/mazraamarketpgh/"><i class="fa fa-facebook"></i></a>
+                                    </li>
+
+                                    <li>
+                                        <a href="https://www.instagram.com/mazraa_market/"><i class="fa fa-instagram"></i></a>
+                                    </li>
+
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /row -->
+                </div>
+                <!-- /container -->
+            </div>
+<form id="j_idt88" name="j_idt88" method="post" action="/faces/storeParCategorie.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt88" value="j_idt88">
+
+                <!-- FOOTER -->
+                <footer id="footer">
+                    <!-- top footer -->
+                    <div class="section">
+                        <!-- container -->
+                        <div class="container">
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-md-4 col-xs-6">
+                                    <div class="footer">
+                                        <ul class="footer-links">
+                                            <li>
+                                                <img src="../resources/images/Mazraa_Market_AR.png" style="height: 90px;" alt="" width="1336" height="821">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="footer">
+                                        <h3 class="footer-title">COORDONNÉES</h3>
+                                        <p></p>
+                                        <ul class="footer-links">
+                                            <li><a href="https://www.google.com/maps/place/Mazraa+Market/@36.7367414,10.2968859,18.3z/data=!4m8!1m2!2m1!1sm+azraamarket!3m4!1s0x0:0x95683601b54c05eb!8m2!3d36.7366831!4d10.2973223"><i class="fa fa-map-marker"></i>GP 1 Km 12,
+Ezzahra
+2034 Ben Arous</a></li>
+                                            <li><a href=""><i class="fa fa-phone"></i>(216) 93114254</a></li>
+                                            <li><a href=""><i class="fa fa-fax"></i>(216) 70011485</a></li>
+                                            <li><a href="mailto:info@elmazraamarket.com.tn"><i class="fa fa-envelope-o"></i>Ventenligne.mazraamarket@mazraamarket.com</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-6">
+                                    <div class="footer">
+                                        <h3 class="footer-title">Categories</h3>
+                                        <ul class="footer-links">
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:0:j_idt92':'j_idt88:j_idt90:0:j_idt92'},'');return false"> 
+                                                        LE MARCHÉ  
+                                                        </a>
+                                                </li>
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:1:j_idt92':'j_idt88:j_idt90:1:j_idt92'},'');return false"> 
+                                                        MAZRAA  
+                                                        </a>
+                                                </li>
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:2:j_idt92':'j_idt88:j_idt90:2:j_idt92'},'');return false"> 
+                                                        PRÊT À MANGER  
+                                                        </a>
+                                                </li>
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:3:j_idt92':'j_idt88:j_idt90:3:j_idt92'},'');return false"> 
+                                                        ALIMENTATION  
+                                                        </a>
+                                                </li>
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:4:j_idt92':'j_idt88:j_idt90:4:j_idt92'},'');return false"> 
+                                                        MAISON &amp; HYGIÈNE  
+                                                        </a>
+                                                </li>
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:5:j_idt92':'j_idt88:j_idt90:5:j_idt92'},'');return false"> 
+                                                        PET FOOD  
+                                                        </a>
+                                                </li>
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:6:j_idt92':'j_idt88:j_idt90:6:j_idt92'},'');return false"> 
+                                                        BAZAAR  
+                                                        </a>
+                                                </li>
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:7:j_idt92':'j_idt88:j_idt90:7:j_idt92'},'');return false"> 
+                                                        NOUVAUTÉ  
+                                                        </a>
+                                                </li>
+                                                <li style="font-size: 12px"><a href="#" type="push" onclick="mojarra.jsfcljs(document.getElementById('j_idt88'),{'j_idt88:j_idt90:8:j_idt92':'j_idt88:j_idt90:8:j_idt92'},'');return false"> 
+                                                        EPICERIE  
+                                                        </a>
+                                                </li>
+
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix visible-xs"></div>
+
+                                <div class="col-md-4 col-xs-6">
+                                    <div class="footer">
+                                        <h3 class="footer-title">Informations</h3>
+                                        <ul class="footer-links">
+                                            <li><a href="accueil.xhtml">ACCUEIL</a></li>
+                                            <li><a href="presentation.xhtml">À propos</a></li>                                        
+                                            <li><a href="actualite.xhtml">Actualités</a></li>
+                                            <li><a href="recettes.xhtml">Recettes</a></li>
+                                            <li><a href="contact.xhtml">Contactez-nous</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12" style="text-align: center; ">
+                                    <h4 class="footer-title" style="color: #FFFFFF">...إنتي أختار و نحنا نوصلولك للدار</h4>
+                                </div>
+                            </div>
+                            <!-- /row -->
+                        </div>
+                        <!-- /container -->
+                    </div>
+                    <!-- /top footer -->
+
+
+
+
+                    <!-- bottom footer -->
+                    <div id="bottom-footer" class="section">
+                        <div class="container">
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <!--ul class="footer-payments"&gt;
+                                        &lt;li&gt;&lt;a href="#"&gt;&lt;i class="fa fa-cc-visa"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href="#"&gt;&lt;i class="fa fa-credit-card"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href="#"&gt;&lt;i class="fa fa-cc-paypal"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href="#"&gt;&lt;i class="fa fa-cc-mastercard"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href="#"&gt;&lt;i class="fa fa-cc-discover"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+                                        &lt;li&gt;&lt;a href="#"&gt;&lt;i class="fa fa-cc-amex"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+                                    &lt;/ul-->
+                                    <span class="copyright">
+                                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                        Copyright <script>document.write(new Date().getFullYear());</script>2026 All rights reserved |  with <i class="fa fa-heart-o" style="color: #F19106" aria-hidden="true"></i> by <a href="http://www.symatique.com/" style="color: #F19106" target="_blank">Symatique</a>
+                                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    </span>
+
+
+                                </div>
+                            </div>
+                            <!-- /row -->
+                        </div>
+                        <!-- /container -->
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                    <!-- /bottom footer -->
+                </footer><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:5" value="7714847969366038837:8897703464340799148" autocomplete="off">
+</form>
+<form id="formChat" name="formChat" method="post" action="/faces/storeParCategorie.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="formChat" value="formChat">
+<input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:6" value="7714847969366038837:8897703464340799148" autocomplete="off">
+</form>
+<form id="j_idt106" name="j_idt106" method="post" action="/faces/storeParCategorie.xhtml" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="j_idt106" value="j_idt106">
+<input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:7" value="7714847969366038837:8897703464340799148" autocomplete="off">
+</form>
+
+
+            <!-- /FOOTER -->
+
+
+            <!-- jQuery Plugins -->
+
+            <style>
+
+
+                .ui-growl .ui-growl-item-container.ui-growl-info {
+                    background-color: #b7d8b7;
+                    border: 0 none;
+                    color: #212121;
+                }
+                .ui-growl .ui-growl-item-container.ui-growl-error {
+                    background-color: #f8b7bd;
+                    border: 0 none;
+                    color: #212121;
+                }
+
+
+                *{padding:0;margin:0;}
+
+
+
+                .label-container{
+                    position:fixed;
+                    bottom:48px;
+                    right:105px;
+                    display:table;
+                    visibility: hidden;
+                }
+
+                .label-text{
+                    color:#FFF;
+                    background:rgba(51,51,51,0.5);
+                    display:table-cell;
+                    vertical-align:middle;
+                    padding:10px;
+                    border-radius:3px;
+                }
+
+                .label-arrow{
+                    display:table-cell;
+                    vertical-align:middle;
+                    color:#333;
+                    opacity:0.5;
+                }
+
+
+                .float{
+                    position:fixed;
+                    width:60px;
+                    height:60px;
+                    bottom:40px;
+                    right:40px;
+                    background-color:#F19106;
+                    color:#FFF;
+                    border-radius:50px;
+                    text-align:center;
+                    box-shadow: 2px 2px 3px #ffffff00;
+
+                }
+
+                .my-float{
+                    font-size:24px;
+                    margin-top:18px;
+                }
+
+                a.float + div.label-container {
+                    visibility: hidden;
+                    opacity: 0;
+                    transition: visibility 0s, opacity 0.5s ease;
+                }
+
+                a.float:hover + div.label-container{
+                    visibility: visible;
+                    opacity: 1;
+                }
+
+                .fa-comments-o{
+                    color: #fff;
+                }
+                .ui-datalist .ui-datalist-content {
+                    border:0 none
+                }
+
+                .ui-datalist ul {
+                    padding: 0px 10px 0 20px;
+                    margin: 5px 0;
+                }
+
+                .value {
+                    font-weight: bold;
+                }
+
+                .ui-autocomplete-itemtip {
+                    -moz-box-sizing: content-box;
+                    -webkit-box-sizing: content-box;
+                    box-sizing: content-box;
+                }
+
+
+
+
+
+            </style>
+
+
+            <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+
+            <script type="text/javascript" src="../resources/js/slick.min.js"></script>
+            <script type="text/javascript" src="../resources/js/nouislider.min.js"></script>
+            <script type="text/javascript" src="../resources/js/jquery.zoom.min.js"></script>
+            <script type="text/javascript" src="../resources/js/main.js"></script>
+            <script type="text/javascript" src="../resources/js/pwd.main.js"></script>
+
+
+
+            <script>
+                                            let d1 = document.getElementById("addClass1");
+                                            $(function () {
+                                                $("#addClass").click(function () {
+                                                    $('#qnimate').addClass('popup-box-on');
+                                                    $('#addClass1').hide();
+                                                    $('#addClass2').hide();
+                                                });
+                                                $("#openChatDialog").click(function () {
+                                                    $('#addClass1').show();
+                                                    $('#addClass2').show();
+                                                });
+                                                $("#addClass1").click(function () {
+                                                    $('#qnimate').addClass('popup-box-on');
+                                                    $('#addClass1').hide();
+                                                    $('#addClass2').hide();
+                                                });
+                                                $("#removeClass").click(function () {
+                                                    $('#qnimate').removeClass('popup-box-on');
+                                                    $('#addClass1').show();
+                                                    $('#addClass2').show();
+                                                });
+                                            });
+            </script>
+<div id="textarea_simulator" style="position: absolute; top: 0px; left: 0px; visibility: hidden;"></div><div class="ui-dialog-docking-zone"></div><div id="growl_container" class="ui-growl ui-widget" style="z-index: 1001;"></div></body></html>

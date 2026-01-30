@@ -1,0 +1,112 @@
+{
+  "categories": [
+    {
+      "name": "Eaux",
+      "url": "https://www.carrefour.tn/boissons/eaux.html",
+      "category": "boissons",
+      "enabled": true
+    },
+    {
+      "name": "Café",
+      "url": "https://www.carrefour.tn/epicerie-sucree/cafe.html",
+      "category": "epicerie_sucree",
+      "enabled": true
+    },
+    {
+      "name": "Blé et Semoule",
+      "url": "https://www.carrefour.tn/epicerie-salee/ble-et-semoule.html",
+      "category": "epicerie_salee",
+      "enabled": true
+    },
+    {
+      "name": "Thés et Infusions",
+      "url": "https://www.carrefour.tn/epicerie-sucree/thes-et-infusions.html",
+      "category": "epicerie_sucree",
+      "enabled": true
+    },
+    {
+      "name": "Crémerie et Produits Laitiers",
+      "url": "https://www.carrefour.tn/cremerie-et-produits-laitiers.html",
+      "category": "produits_laitiers",
+      "enabled": true
+    },
+    {
+      "name": "Thon",
+      "url": "https://www.carrefour.tn/epicerie-salee/thon.html",
+      "category": "epicerie_salee",
+      "enabled": true
+    },
+    {
+      "name": "Sauces et Assaisonnements",
+      "url": "https://www.carrefour.tn/epicerie-salee/sauces-et-assaisonnements.html",
+      "category": "epicerie_salee",
+      "enabled": true
+    },
+    {
+      "name": "Jus",
+      "url": "https://www.carrefour.tn/boissons/jus.html",
+      "category": "boissons",
+      "enabled": false
+    },
+    {
+      "name": "Sodas",
+      "url": "https://www.carrefour.tn/boissons/sodas.html",
+      "category": "boissons",
+      "enabled": false
+    },
+    {
+      "name": "Chocolat",
+      "url": "https://www.carrefour.tn/epicerie-sucree/chocolat.html",
+      "category": "epicerie_sucree",
+      "enabled": false
+    },
+    {
+      "name": "Biscuits",
+      "url": "https://www.carrefour.tn/epicerie-sucree/biscuits.html",
+      "category": "epicerie_sucree",
+      "enabled": false
+    },
+    {
+      "name": "Pâtes",
+      "url": "https://www.carrefour.tn/epicerie-salee/pates.html",
+      "category": "epicerie_salee",
+      "enabled": false
+    },
+    {
+      "name": "Riz",
+      "url": "https://www.carrefour.tn/epicerie-salee/riz.html",
+      "category": "epicerie_salee",
+      "enabled": false
+    },
+    {
+      "name": "Huiles",
+      "url": "https://www.carrefour.tn/epicerie-salee/huiles.html",
+      "category": "epicerie_salee",
+      "enabled": false
+    },
+    {
+      "name": "Conserves",
+      "url": "https://www.carrefour.tn/epicerie-salee/conserves.html",
+      "category": "epicerie_salee",
+      "enabled": false
+    },
+    {
+      "name": "Lait",
+      "url": "https://www.carrefour.tn/produits-laitiers/lait.html",
+      "category": "produits_laitiers",
+      "enabled": false
+    },
+    {
+      "name": "Yaourts",
+      "url": "https://www.carrefour.tn/produits-laitiers/yaourts.html",
+      "category": "produits_laitiers",
+      "enabled": false
+    },
+    {
+      "name": "Fromages",
+      "url": "https://www.carrefour.tn/produits-laitiers/fromages.html",
+      "category": "produits_laitiers",
+      "enabled": false
+    }
+  ]
+}
