@@ -4,8 +4,8 @@ from fastembed import TextEmbedding
 import pandas as pd
 import uuid
 from typing import List, Dict, Any, Optional
-from .config import settings
-from .models import Product
+from .config_usershop import settings
+from .models_usershop import Product
 import logging
 from functools import lru_cache
 import asyncio
@@ -237,6 +237,9 @@ class QdrantDatabase:
                 "points_count": 0,
                 "status": "unknown"
             }
+
+# Instance globale
+db = QdrantDatabase()
 
 # Instance globale
 db = QdrantDatabase()

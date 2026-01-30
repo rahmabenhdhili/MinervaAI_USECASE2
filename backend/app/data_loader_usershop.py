@@ -1,7 +1,8 @@
 import pandas as pd
 import logging
 from typing import List, Dict, Any
-from .models import Product
+from .models_usershop import Product
+from .utils_usershop import normalize_price_display
 import os
 import glob
 
@@ -80,6 +81,9 @@ class DataLoader:
             
             for _, row in df.iterrows():
                 try:
+                    # Normaliser le prix pour affichage en TND
+                    price_display = normalize_price_display(str(row['price']).strip())
+                    
                     product = Product(
                         url=str(row['url']).strip(),
                         name=str(row['name']).strip(),
@@ -87,7 +91,7 @@ class DataLoader:
                         brand=str(row['brand']).strip(),
                         img=str(row['img']).strip(),
                         description=str(row['description']).strip(),
-                        price=str(row['price']).strip()
+                        price=price_display  # Prix normalisé en TND
                     )
                     products.append(product)
                 except Exception as e:
@@ -174,6 +178,9 @@ class DataLoader:
         except Exception as e:
             logger.error(f"Erreur lors de la validation du CSV: {e}")
             return False
+
+# Instance globale
+data_loader = DataLoader()
 
 # Instance globale
 data_loader = DataLoader()
